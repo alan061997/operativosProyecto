@@ -3,22 +3,25 @@ USE testApp;
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE ESTUDIANTES (
-  id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-  matricula INT(7),
+  id_estudiante SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+  matricula VARCHAR(7) NOT NULL,
   firstName VARCHAR(30) NOT NULL,
   lastName VARCHAR(30) NOT NULL,
   semestre TINYINT(2) NOT NULL,
   fechaIngreso DATE,
+  estatus SMALLINT(6) NOT NULL,
   CONSTRAINT UC_ESTUDIANTE UNIQUE (matricula, firstName, lastName),
-  CONSTRAINT PK_ESTUDIANTE PRIMARY KEY (id)
+  CONSTRAINT PK_ESTUDIANTE PRIMARY KEY (id_estudiante),
+  CONSTRAINT FK_ESTATUS
+      FOREIGN KEY (estatus) REFERENCES ESTATUS (id_estatus)
  );
 
 
-INSERT INTO ESTUDIANTES (matricula, firstName, lastName, semestre, fechaIngreso) VALUES (1635501, "Alberto Alan", "Zul Rabasa", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Adrian", "Guerra Guajardo", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Karla Cecilia", "Cantu Facio", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Andrea Michel", "Becerra Cortez", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Alberto", "Mesa Camacho", 4, '2016-08-21');
+INSERT INTO ESTUDIANTES (matricula, firstName, lastName, semestre, fechaIngreso) VALUES (1635501, "Alberto Alan", "Zul", "Rabasa", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Adrian", "Guerra", "Guajardo", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Karla Cecilia", "Cantu", "Facio", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Andrea Michel", "Becerra", "Cortez", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Alberto", "Mesa", "Camacho", 4, '2016-08-21');
 
 -----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -79,7 +82,7 @@ INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (536, "ANALISIS 
 INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (005, "CONTEXTO SOCIAL DE LA PROFESION", NULL, 5);
 
 -----------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE FRECUENCIA(
+CREATE TABLE FRECUENCIAS(
   id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
   frecuencia INT(6) NOT NULL,
   diaSemana VARCHAR(20) NOT NULL,
@@ -179,28 +182,30 @@ INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Sa");
 
 
 --------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE ESTATUS (
-	id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-    nombre VARCHAR(30) NOT NULL, 	
-    description VARCHAR(100)
-); 
+CREATE TABLE ESTATUS(
+    id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+    clave INT(7) NOT NULL,
+    requires INT(7),
+    CONSTRAINT PK_ESTATUS PRIMARY KEY (id)
+);
+
 -----------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE MAESTROS (
    id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-   nombre VARCHAR(30) NOT NULL, 	
+   nombre VARCHAR(30) NOT NULL,
    firstName VARCHAR(30) NOT NULL,
    lastName VARCHAR(30) NOT NULL,
    semestre TINYINT(2) NOT NULL,
    fechaIngreso DATE,
-   estatus INT FOREIGN KEY REFERENCES ESTATUS(id), 
-   CONSTRAINT PK_MAESTROS PRIMARY KEY (id) 
-); 
+   estatus INT FOREIGN KEY REFERENCES ESTATUS(id),
+   CONSTRAINT PK_MAESTROS PRIMARY KEY (id)
+);
 
 -----------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE HORARIOS (
-	id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL, 
-    horaInicio TIME NOT NULL, 
-    horaFin TIME NOT NULL, 
+	id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
+    horaInicio TIME NOT NULL,
+    horaFin TIME NOT NULL,
     description VARCHAR(100),
     CONSTRAINT PK_HORARIOS PRIMARY KEY (id)
 );
@@ -211,23 +216,16 @@ CREATE TABLE CURSOS (
   matricula INT FOREIGN KEY REFERENCES ESTUDIANTE(matricula),
   clave INT FOREIGN KEY REFERENCES MATERIAS(clave),
   horaInicio TIME NOT NULL,
-  CONSTRAINT PK_CURSO PRIMARY KEY (id) 
+  CONSTRAINT PK_CURSO PRIMARY KEY (id)
 );
 
 -----------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE INSCRIPCION (
   id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-  CONSTRAINT PK_INCRIPCION PRIMARY KEY (id), 
-  matricula INT FOREIGN KEY REFERENCES ESTUDIANTE(matricula), 
-  curso INT FOREIGN KEY REFERENCES CURSOS(id), 
+  CONSTRAINT PK_INCRIPCION PRIMARY KEY (id),
+  matricula INT FOREIGN KEY REFERENCES ESTUDIANTE(matricula),
+  curso INT FOREIGN KEY REFERENCES CURSOS(id),
   estatus INT FOREIGN KEY REFERENCES ESTATUS(id)
 );
 
 -----------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
