@@ -68,7 +68,7 @@ export default class LoginScreen extends Component {
   }
 
   login = () => {
-      fetch('http://192.168.0.7/Backend/endpoint.php', {
+    fetch('http://sis-operativos-2018.herokuapp.com/endpoint.php', {
         method: 'POST',
         headers: {
           'Accept' : "application/json",
