@@ -81,12 +81,11 @@ export default class LoginScreen extends Component {
       })
       .then((response) => response.json())
       .then((res) => {
-          if (res[0].id !== undefined){
+          if (res[0] !== undefined){
             AsyncStorage.setItem('username', res[0].username);
             this.props.navigation.navigate('Home');
           } else{
-            Alert.alert(this.state.username, this.state.password);
-            console.log(res[0].id)
+            Alert.alert("Username/Password are invalid.");
           }
       })
       .catch((error)=>{
