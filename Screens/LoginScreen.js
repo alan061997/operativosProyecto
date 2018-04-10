@@ -59,7 +59,7 @@ export default class LoginScreen extends Component {
         </View>
         <View style={styles.container}>
           <TouchableOpacity onPress={this.login} style={styles.btn}>
-            <Text>Log In</Text>
+            <Text style={styles.txt}>Log In</Text>
           </TouchableOpacity>
         </View>
         <View style={{flex: 0.3, backgroundColor: 'steelblue'}} />
@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#841584',
-
+  },
+  txt:{
+    color: '#C0C0C0',
   },
 })

@@ -4,6 +4,12 @@ import {StackNavigator} from 'react-navigation';
 
 import LoginScreen from "./Screens/LoginScreen";
 import HomeScreen from "./Screens/HomeScreen"
+import HorarioScreen from "./Screens/HorarioScreen"
+import InscripcionScreen from "./Screens/InscripcionScreen"
+import CursoScreen from "./Screens/CursoScreen"
+import GruposScreen from "./Screens/GruposScreen"
+import GrupoScreen from "./Screens/GrupoScreen"
+import MateriasScreen from "./Screens/MateriasScreen"
 
 export default class App extends Component {
   render() {
@@ -21,9 +27,36 @@ const AppNavigator = StackNavigator(
     Home: {
       screen: HomeScreen,
     },
+    Horario: {
+      screen: HorarioScreen,
+    },
+    Inscripcion: {
+      screen: InscripcionScreen,
+    },
+    Curso: {
+      screen: CursoScreen,
+    },
+    Grupo: {
+      screen: GrupoScreen,
+    },
+    Grupos: {
+      screen: GruposScreen,
+    },
+    Materias: {
+      screen: MateriasScreen,
+    },
   },
   {
     initialRouteName: 'LogIn',
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#802080',
+      },
+      headerTintColor: '#eee',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    },
   }
 );
 
