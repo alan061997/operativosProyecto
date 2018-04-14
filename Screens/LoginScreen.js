@@ -69,24 +69,25 @@ export default class LoginScreen extends Component {
   }
 
   login = () => {
-      fetch('http://192.168.0.7/Backend/endpoint.php', {
-        method: 'POST',
+    usrname = this.state.username;
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/usuarios?filter=username,eq,${usrname}&transform=1`, {
+        method: 'GET',
         headers: {
           'Accept' : "application/json",
           'Content-Type' : 'application/json',
         },
-          body: JSON.stringify({
-              username: this.state.username,
-              password: this.state.password,
-          })
       })
       .then((response) => response.json())
       .then((res) => {
-          if (res[0] !== undefined){
-            AsyncStorage.setItem('username', res[0].username);
-            this.props.navigation.navigate('Home', {username: this.state.username});
+        console.log(`response = ${JSON.stringify(res)}`)
+          if (res.usuarios.length > 0 ){
+            user_data = res.usuarios[0]
+            if(user_data.password == this.state.password)
+              this.props.navigation.navigate('Home', { user_data: user_data});
+            else
+              Alert.alert("Password incorrecto");
           } else{
-            Alert.alert("Username/Password are invalid.");
+            Alert.alert("Usuario no existe");
           }
       })
       .catch((error)=>{
