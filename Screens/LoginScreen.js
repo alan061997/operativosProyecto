@@ -9,7 +9,10 @@ export default class LoginScreen extends Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      user_data: {},
+      student_data: {},
+      logged_in: false,
     };
   }
 
@@ -82,10 +85,15 @@ export default class LoginScreen extends Component {
         console.log(`response = ${JSON.stringify(res)}`)
           if (res.usuarios.length > 0 ){
             user_data = res.usuarios[0]
-            if(user_data.password == this.state.password)
-              this.props.navigation.navigate('Home', { user_data: user_data});
-            else
+            console.log("test login")
+            if(user_data.password == this.state.password){
+              this.setState({logged_in: true})
+              this.setState({ user_data: user_data })
+              console.log("usuario correcto")
+            }
+            else{
               Alert.alert("Password incorrecto");
+            }
           } else{
             Alert.alert("Usuario no existe");
           }
@@ -94,6 +102,30 @@ export default class LoginScreen extends Component {
         console.error(error);
       })
       .done();
+    console.log("fetching student data...")
+    usr_id = this.state.user_data.id;
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/estudiantes?filter=usuario,eq,${usr_id}&transform=1`, {
+      method: 'GET',
+      headers: {
+        'Accept': "application/json",
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(`response = ${JSON.stringify(res)}`)
+      if (res.estudiantes.length > 0) {
+        student_data = res.estudiantes[0]
+        console.log("student confirmed")
+        this.setState({ student_data: student_data })
+        this.props.navigation.navigate('Home', { user_data: user_data, student_data: student_data });
+      } else {
+        Alert.alert("Estudiante no existe");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    }).done();
   }
 }
 

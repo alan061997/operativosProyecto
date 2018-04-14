@@ -15,6 +15,7 @@ export default class InscripcionScreen extends Component {
     super(props)
     this.state = {
       user_data: this.props.navigation.state.params.user_data,
+      student_data: this.props.navigation.state.params.student_data,
     };
   }
   render() {
@@ -23,9 +24,11 @@ export default class InscripcionScreen extends Component {
     return (
       <View style={styles.container}>
         <Text>Vista de inscripcion</Text>
-        <Text>haz tu horario, {user_data.username}</Text>
+        <Text>haz tu horario, {student_data.nombre}</Text>
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Curso')} style={styles.btn}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Curso', { 
+            user_data: this.state.user_data, 
+            student_data: this.state.student_data })} style={styles.btn}>
             <Text style={styles.txt}>Ver Curso</Text>
           </TouchableOpacity>
         </View>

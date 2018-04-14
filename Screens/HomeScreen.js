@@ -16,6 +16,7 @@ export default class HomeScreen extends Component {
     super(props)
     this.state = {
       user_data: this.props.navigation.state.params.user_data,
+      student_data: this.props.navigation.state.params.student_data,
     };
   }
 
@@ -23,7 +24,8 @@ export default class HomeScreen extends Component {
     return (
       <View style={styles.container}>
         <Text>This is the HomeScreen</Text>
-        <Text>Hello, user #{user_data.id}</Text>
+        <Text>Hello, {student_data.nombre}</Text>
+        <Text>matricula = {student_data.matricula}</Text>
         <View style={styles.container}>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('Inscripcion', { user_data: user_data })} style={styles.btn}>
             <Text style={styles.txt}>Inscripcion</Text>

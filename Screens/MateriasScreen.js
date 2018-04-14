@@ -11,14 +11,24 @@ export default class MateriasScreen extends Component {
           <Text>Log Out</Text>
       </TouchableOpacity>
   };
+  constructor(props) {
+    super(props)
+    this.state = {
+      user_data: this.props.navigation.state.params.user_data,
+      student_data: this.props.navigation.state.params.student_data,
+    };
+  }
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         <Text>Lista de materias</Text>
+        <Text>matricula = {student_data.matricula}</Text>
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos')} style={styles.btn}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
+            user_data: this.state.user_data,
+            student_data: this.state.student_data})} style={styles.btn}>
             <Text style={styles.txt}>Ver grupos</Text>
           </TouchableOpacity>
         </View>

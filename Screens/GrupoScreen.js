@@ -11,6 +11,13 @@ export default class GrupoScreen extends Component {
           <Text>Log Out</Text>
       </TouchableOpacity>
   };
+  constructor(props) {
+    super(props)
+    this.state = {
+      user_data: this.props.navigation.state.params.user_data,
+      student_data: this.props.navigation.state.params.student_data,
+    };
+  }
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
