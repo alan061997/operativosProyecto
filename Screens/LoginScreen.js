@@ -24,9 +24,10 @@ export default class LoginScreen extends Component {
     }
   }
 
-  static navigationOptions = {
+  static navigationOptions = ({navigation}) => ({
     title: 'Log In',
-  };
+    headerLeft: null
+  });
 
   render() {
     const { navigate } = this.props.navigation;
@@ -83,7 +84,7 @@ export default class LoginScreen extends Component {
       .then((res) => {
           if (res[0] !== undefined){
             AsyncStorage.setItem('username', res[0].username);
-            this.props.navigation.navigate('Home');
+            this.props.navigation.navigate('Home', {username: this.state.username});
           } else{
             Alert.alert("Username/Password are invalid.");
           }
@@ -108,6 +109,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#841584',
-
   },
 })
