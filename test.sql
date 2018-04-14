@@ -1,39 +1,12 @@
 USE testApp;
 
------------------------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE ESTUDIANTES (
-  id_estudiante SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-  matricula VARCHAR(7) NOT NULL,
-  firstName VARCHAR(30) NOT NULL,
-  lastName VARCHAR(30) NOT NULL,
-  semestre TINYINT(2) NOT NULL,
-  fechaIngreso DATE,
-  estatus SMALLINT(6) NOT NULL,
-  CONSTRAINT UC_ESTUDIANTE UNIQUE (matricula, firstName, lastName),
-  CONSTRAINT PK_ESTUDIANTE PRIMARY KEY (id_estudiante),
-  CONSTRAINT FK_ESTATUS
-      FOREIGN KEY (estatus) REFERENCES ESTATUS (id_estatus)
- );
-
-
-INSERT INTO ESTUDIANTES (matricula, firstName, lastName, semestre, fechaIngreso) VALUES (1635501, "Alberto Alan", "Zul", "Rabasa", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Adrian", "Guerra", "Guajardo", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Karla Cecilia", "Cantu", "Facio", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Andrea Michel", "Becerra", "Cortez", 6, '2015-08-21');
-INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES ("Alberto", "Mesa", "Camacho", 4, '2016-08-21');
+INSERT INTO ESTUDIANTES (matricula, firstName, lastName, semestre, fechaIngreso) VALUES (1635501, "Alberto Alan", "Zul Rabasa", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES (1, "Adrian", "Gerra Guajardo", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES (2, "Karla Cecilia", "Cantu Facio", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES (3,"Andrea Michel", "Becerra Cortez", 6, '2015-08-21');
+INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES (4, "Alberto", "Mesa Camacho", 4, '2016-08-21');
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-
-CREATE TABLE MATERIAS (
-  id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-  clave INT(7) NOT NULL,
-  nombre VARCHAR(50) NOT NULL,
-  requires INT(7),
-  semestre TINYINT(2) NOT NULL,
-  CONSTRAINT UC_MATERIA UNIQUE (clave, nombre),
-  CONSTRAINT PK_MATERIA PRIMARY KEY (id)
-);
 
 -- PRIMER SEMESTRE --
 INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (101, "MATEMATICAS 1", NULL, 1);
@@ -78,7 +51,7 @@ INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (134, "ESTADISTI
 INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (135, "ANALISIS NUMERICO", 127, 5);
 INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (136, "MICROPROCESADORES", 128, 5);
 INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (138, "ARQUITECTURA AVANZADA DE COMPUTADORAS", NULL, 5);
-INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (536, "ANALISIS DE SISTEMAS 2", NULL, 5);
+INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (536, "ANALISIS DE SISTEMAS 2", 118, 5);
 INSERT INTO MATERIAS (clave, nombre, requires, semestre) VALUES (005, "CONTEXTO SOCIAL DE LA PROFESION", NULL, 5);
 
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -86,146 +59,107 @@ CREATE TABLE FRECUENCIAS(
   id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
   frecuencia INT(6) NOT NULL,
   diaSemana VARCHAR(20) NOT NULL,
-  requires VARCHAR(100),
-  CONSTRAINT UC_FRECUENCIA UNIQUE (diaSemana),
-  CONSTRAINT PK_FRECUENCIA PRIMARY KEY (id)
+  CONSTRAINT UC_FRECUENCIAS UNIQUE (diaSemana),
+  CONSTRAINT PK_FRECUENCIAS PRIMARY KEY (id)
 );
 
 -- Lunes --
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Lu");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Lu");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Lu-Ma");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Lu-Mi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Lu-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Lu-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Lu-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Lu-Ma");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Lu-Mi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Lu-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Lu-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Lu-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Mi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Mi-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Mi-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Mi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Lu-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Mi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Ma-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Mi-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Mi-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Mi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Lu-Vi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Mi-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Mi-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Mi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Vi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Mi-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Mi-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Mi-Vi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Lu-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Mi-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Mi-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Mi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ma-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Mi-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Mi-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Mi-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Lu-Ju-Vi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Mi-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Mi-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Mi-Vi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Ju-Vi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(5, "Lu-Mi-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Mi-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Mi-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Mi-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(5, "Lu-Ma-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(5, "Lu-Mi-Ju-Vi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(6, "Lu-Ma-Mi-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(6, "Lu-Ma-Mi-Ju-Vi-Sa");
 
 -- Martes --
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Ma");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Ma");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Ma-Mi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Ma-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Ma-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Ma-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Ma-Mi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Ma-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Ma-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Ma-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ma-Mi-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ma-Mi-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ma-Mi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ma-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ma-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ma-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ma-Mi-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ma-Mi-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ma-Mi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ma-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ma-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ma-Vi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Ma-Mi-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Ma-Mi-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Ma-Mi-Vi-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Ma-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Ma-Mi-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Ma-Mi-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Ma-Mi-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Ma-Ju-Vi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(5, "Ma-Mi-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(5, "Ma-Mi-Ju-Vi-Sa");
 
 -- Miercoles --
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Mi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Mi");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Mi-Ju");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Mi-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Mi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Mi-Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Mi-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Mi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Mi-Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Mi-Ju-Sa");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Mi-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Mi-Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Mi-Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Mi-Vi-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(4, "Mi-Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(4, "Mi-Ju-Vi-Sa");
 
 -- Jueves --
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Ju");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Ju");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Ju-Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Ju-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Ju-Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Ju-Sa");
 
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(3, "Ju-Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(3, "Ju-Vi-Sa");
 
 -- Viernes --
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Vi");
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(2, "Vi-Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Vi");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(2, "Vi-Sa");
 
 -- Sabado --
-INSERT INTO FRECUENCIA(frecuencia, diaSemana) VALUES(1, "Sa");
+INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Sa");
 
 
 --------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE ESTATUS(
-    id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-    clave INT(7) NOT NULL,
-    requires INT(7),
-    CONSTRAINT PK_ESTATUS PRIMARY KEY (id)
-);
+-- Maestros --
+INSERT INTO MAESTROS (nombre, apellidoPaterno, apellidoMaterno, semestre, fechaIngreso, estatus) VALUES ("MIGUEL ALEJANDRO", "CANDELARIA", "CORONADO", 5, "2001-02-21", 4);
+INSERT INTO MAESTROS (nombre, apellidoPaterno, apellidoMaterno, semestre, fechaIngreso, estatus) VALUES ("JOSE LUIS", "VAZQUEZ", "NIEBLA", 4, "2001-02-21", 4);
 
------------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE MAESTROS (
-   id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-   nombre VARCHAR(30) NOT NULL,
-   firstName VARCHAR(30) NOT NULL,
-   lastName VARCHAR(30) NOT NULL,
-   semestre TINYINT(2) NOT NULL,
-   fechaIngreso DATE,
-   estatus INT FOREIGN KEY REFERENCES ESTATUS(id),
-   CONSTRAINT PK_MAESTROS PRIMARY KEY (id)
-);
+-- Cursos --
+INSERT INTO CURSOS (materia, maestro, semestre, frecuencia, horaInicio, horaFin) VALUES (138, 1, 5, 12, "07:00:00", "08:00:00");
 
------------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE HORARIOS (
-	id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-    horaInicio TIME NOT NULL,
-    horaFin TIME NOT NULL,
-    description VARCHAR(100),
-    CONSTRAINT PK_HORARIOS PRIMARY KEY (id)
-);
-
------------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE CURSOS (
-  id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-  matricula INT FOREIGN KEY REFERENCES ESTUDIANTE(matricula),
-  clave INT FOREIGN KEY REFERENCES MATERIAS(clave),
-  horaInicio TIME NOT NULL,
-  CONSTRAINT PK_CURSO PRIMARY KEY (id)
-);
-
------------------------------------------------------------------------------------------------------------------------------------
-CREATE TABLE INSCRIPCION (
-  id SMALLINT(6) UNSIGNED AUTO_INCREMENT NOT NULL,
-  CONSTRAINT PK_INCRIPCION PRIMARY KEY (id),
-  matricula INT FOREIGN KEY REFERENCES ESTUDIANTE(matricula),
-  curso INT FOREIGN KEY REFERENCES CURSOS(id),
-  estatus INT FOREIGN KEY REFERENCES ESTATUS(id)
-);
-
------------------------------------------------------------------------------------------------------------------------------------
+-- Inscripciones --
+INSERT INTO INSCRIPCIONES(matricula, curso, estatus) VALUES (1635501, 1, 1);
