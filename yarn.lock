@@ -5612,10 +5612,6 @@ react-native-scripts@1.13.1:
     rimraf "^2.6.1"
     xdl "48.1.4"
 
-react-native-sha256@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-sha256/-/react-native-sha256-1.1.1.tgz#3598dba556b0bbcd12618bd101c10d130c217fc3"
-
 react-native-sqlite-storage@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-3.3.4.tgz#fb9c6b3af6f6857e62104e6544da396fff80895d"
