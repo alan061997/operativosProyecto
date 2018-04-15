@@ -64,7 +64,6 @@ btn: {
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: '#841584',
-  color: '#A0A0A0',
 },
 txt: {
   color: '#C0C0C0',
