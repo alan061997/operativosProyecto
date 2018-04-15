@@ -10,6 +10,7 @@ import CursoScreen from "./Screens/CursoScreen"
 import GruposScreen from "./Screens/GruposScreen"
 import GrupoScreen from "./Screens/GrupoScreen"
 import MateriasScreen from "./Screens/MateriasScreen"
+import LogoutButton from "./Components/LogoutButton"
 
 export default class App extends Component {
   render() {
@@ -56,6 +57,9 @@ const AppNavigator = StackNavigator(
       headerTitleStyle: {
         fontWeight: 'bold',
       },
+      headerRight: (
+        <LogoutButton/>
+      ),
     },
   }
 );

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { Alert, AppRegistry, Button, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import { Alert, AppRegistry, Button, StyleSheet, Text, TextInput, 
+  View, TouchableOpacity, AsyncStorage} from 'react-native';
 import {StackNavigator} from 'react-navigation';
 
 
 export default class HomeScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     title: 'Welcome',
-    headerRight:
-      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
-          <Text>Log Out</Text>
-      </TouchableOpacity>
   });
 
   constructor(props){
@@ -20,7 +17,23 @@ export default class HomeScreen extends Component {
     };
   }
 
+  componentWillMount() {
+    AsyncStorage.getItem('logged_in').then((logged_in) => {
+      if (logged_in == 'user') {
+        this.setState({ logged_in: 'user' });
+        console.log('rendered as user');
+      } else {
+        this.setState({ logged_in: 'guest' });
+        console.log('rendered as guest');
+      }
+    })
+  }
+
   render() {
+    if(this.state.logged_in == 'guest'){
+      console.log("guest, logging out...");
+      this.props.navigation.navigate('LogIn');
+    }
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (

@@ -12,16 +12,16 @@ export default class LoginScreen extends Component {
       password: '',
       user_data: {},
       student_data: {},
-      logged_in: false,
+      logged_in: 'guest',
     };
   }
-
   componenDidMount(){
     this._loadInitialState().done();
   }
 
   _loadInitialState = async() => {
-    var value = await AsyncStorage.getItem('username');
+    var value = await AsyncStorage.getItem('logged_in');
+    console.log("initial state");
     if (value !== null){
       this.props.navigation.navigate('Home');
     }
@@ -87,7 +87,8 @@ export default class LoginScreen extends Component {
             user_data = res.usuarios[0]
             console.log("test login")
             if(user_data.password == this.state.password){
-              this.setState({logged_in: true})
+              AsyncStorage.setItem({logged_in: 'user'});
+              this.setState({ logged_in: 'user'})
               this.setState({ user_data: user_data })
               console.log("usuario correcto")
             }

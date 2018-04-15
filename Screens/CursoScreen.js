@@ -6,10 +6,6 @@ import {StackNavigator} from 'react-navigation';
 export default class CursoScreen extends Component {
   static navigationOptions = {
     title: 'Curso',
-    headerRight:
-      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
-          <Text>Log Out</Text>
-      </TouchableOpacity>
   };
   constructor(props) {
     super(props)
