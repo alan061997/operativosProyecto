@@ -6,15 +6,29 @@ import {StackNavigator} from 'react-navigation';
 export default class InscripcionScreen extends Component {
   static navigationOptions = {
     title: 'Inscripcion',
+    headerRight:
+      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
+          <Text>Log Out</Text>
+      </TouchableOpacity>
   };
+  constructor(props) {
+    super(props)
+    this.state = {
+      user_data: this.props.navigation.state.params.user_data,
+      student_data: this.props.navigation.state.params.student_data,
+    };
+  }
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         <Text>Vista de inscripcion</Text>
+        <Text>haz tu horario, {student_data.nombre}</Text>
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Curso')} style={styles.btn}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Curso', { 
+            user_data: this.state.user_data, 
+            student_data: this.state.student_data })} style={styles.btn}>
             <Text style={styles.txt}>Ver Curso</Text>
           </TouchableOpacity>
         </View>

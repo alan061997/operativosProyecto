@@ -6,7 +6,18 @@ import {StackNavigator} from 'react-navigation';
 export default class GrupoScreen extends Component {
   static navigationOptions = {
     title: 'Grupo',
+    headerRight:
+      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
+          <Text>Log Out</Text>
+      </TouchableOpacity>
   };
+  constructor(props) {
+    super(props)
+    this.state = {
+      user_data: this.props.navigation.state.params.user_data,
+      student_data: this.props.navigation.state.params.student_data,
+    };
+  }
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
