@@ -21,6 +21,8 @@ export default class HomeScreen extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
+    const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         <Text>This is the HomeScreen</Text>
