@@ -17,6 +17,7 @@ export default class MateriasScreen extends Component {
     this.state = {
       user_data: this.props.navigation.state.params.user_data,
       student_data: this.props.navigation.state.params.student_data,
+      materias_data: {materias: "Ninguna"},
       tableHead: ['Head', 'Head2', 'Head3', 'Head4'],
       tableData: [
         ['1', '2', '3', '4'],
@@ -34,7 +35,7 @@ export default class MateriasScreen extends Component {
       <View style={styles.container}>
         <Text>Lista de materias</Text>
         <Text>matricula = {student_data.matricula}</Text>
-        <Text>json = {this.getMaterias}</Text>
+        <Text>json = {JSON.stringify(this.state.materias_data)}</Text>
         <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
           <Row data={state.tableHead} style={styles.head} textStyle={styles.text}/>
           <Rows data={state.tableData} textStyle={styles.text}/>
@@ -46,20 +47,32 @@ export default class MateriasScreen extends Component {
             <Text style={styles.txt}>Ver grupos</Text>
           </TouchableOpacity>
         </View>
+        <View style={styles.container}>
+          <TouchableOpacity onPress={this.getMaterias} style={styles.btn}>
+            <Text style={styles.txt}>Ver materias</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
-}
-
-function getMaterias() {
-  return fetch('http://sis-operativos-2018.herokuapp.com/materias.php')
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson;
+  getMaterias = () => {
+    console.log("fetching materias...");
+    fetch('http://sis-operativos-2018.herokuapp.com/materias.php', {
+      method: 'GET',
+      headers: {
+        'Accept': "application/json",
+        'Content-Type': 'application/json',
+      },
     })
-    .catch((error) => {
-      console.error(error);
-    });
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(`Materias: ${JSON.stringify(responseJson)}`);
+        this.setState({ materias_data: responseJson });
+      })
+      .catch((error) => {
+        console.error(error);
+      }).done();
+  }
 }
 
 const styles = StyleSheet.create({
