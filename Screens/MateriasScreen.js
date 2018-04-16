@@ -14,6 +14,7 @@ export default class MateriasScreen extends Component {
   };
   componentDidMount(){
     this.getMaterias().done();
+    this.getCursos().done();
   }
   constructor(props) {
     super(props)
@@ -21,6 +22,7 @@ export default class MateriasScreen extends Component {
       materias_data: {materias: 'ninguna'},
       user_data: this.props.navigation.state.params.user_data,
       student_data: this.props.navigation.state.params.student_data,
+      curso_grupo: [':)'],
       tableHead: ['Clave', 'Sem', 'Nombre', 'Requiere'],
       tableData: [
         ['1', '2', '3', '4', ],
@@ -126,6 +128,22 @@ export default class MateriasScreen extends Component {
       else{
         console.log("Materias not found");
       }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  getCursos = async() => {
+    fetch('http://sis-operativos-2018.herokuapp.com/cursos.php', {
+      method: 'GET', 
+      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
+    })
+    .then((response) => response.json())
+    .then((res) => {
+      console.log(`response = ${JSON.stringify(res)}`)
+
+      this.setState({curso_grupo: res})
     })
     .catch((error) => {
       console.error(error);
