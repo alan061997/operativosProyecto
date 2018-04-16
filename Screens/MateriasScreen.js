@@ -34,6 +34,7 @@ export default class MateriasScreen extends Component {
       <View style={styles.container}>
         <Text>Lista de materias</Text>
         <Text>matricula = {student_data.matricula}</Text>
+        <Text>json = {this.getMaterias}</Text>
         <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
           <Row data={state.tableHead} style={styles.head} textStyle={styles.text}/>
           <Rows data={state.tableData} textStyle={styles.text}/>
@@ -50,15 +51,19 @@ export default class MateriasScreen extends Component {
   }
 }
 
-materias = () =>
-{
-  fetch('http://sis-operativos-2018.herokuapp.com/materias.php')
-  .then(function(response) {
-    return response.json();
+getMaterias = () =>  {
+  api = 'http://sis-operativos-2018.herokuapp.com/materias.php';
+  fetch(api, {
+    method: 'GET',
+    headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
   })
-  .then(function(myJson) {
-    console.log(myJson);
-  });
+  .then((response) => response.json())
+  .then((res) => {
+    this.setState({
+      tableHead: res
+    });
+  })
+}
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
