@@ -51,18 +51,15 @@ export default class MateriasScreen extends Component {
   }
 }
 
-getMaterias = () =>  {
-  api = 'http://sis-operativos-2018.herokuapp.com/materias.php';
-  fetch(api, {
-    method: 'GET',
-    headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
-  })
-  .then((response) => response.json())
-  .then((res) => {
-    this.setState({
-      tableHead: res
+function getMaterias() {
+  return fetch('http://sis-operativos-2018.herokuapp.com/materias.php')
+    .then((response) => response.json())
+    .then((responseJson) => {
+      return responseJson;
+    })
+    .catch((error) => {
+      console.error(error);
     });
-  })
 }
 
 const styles = StyleSheet.create({
