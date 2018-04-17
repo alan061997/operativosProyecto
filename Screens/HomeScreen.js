@@ -15,27 +15,22 @@ export default class HomeScreen extends Component {
   constructor(props){
     super(props)
     this.state = {
-      user_data: this.props.navigation.state.params.user_data,
-      student_data: this.props.navigation.state.params.student_data,
+      username: this.props.navigation.state.params.username,
     };
   }
 
   render() {
-    const { navigate } = this.props.navigation;
-    const { params } = this.props.navigation.state;
     return (
       <View style={styles.container}>
         <Text>This is the HomeScreen</Text>
-        <Text>Hello, {student_data.nombre}</Text>
-        <Text>matricula = {student_data.matricula}</Text>
         <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Inscripcion', { user_data: user_data })} style={styles.btn}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Inscripcion', {username: this.state.username})} style={styles.btn}>
             <Text style={styles.txt}>Inscripcion</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Horario', { user_data: user_data })} style={styles.btn}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Horario'), {username: this.state.username}} style={styles.btn}>
             <Text style={styles.txt}>Horario</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Materias', { user_data: user_data })} style={styles.btn}>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('Materias'), {username: this.state.username}} style={styles.btn}>
             <Text style={styles.txt}>Materias</Text>
           </TouchableOpacity>
         </View>

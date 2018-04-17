@@ -1,5 +1,11 @@
 USE testApp;
 
+-- Usuarios --
+
+INSERT INTO USUARIOS (username, password) VALUES ("1635501", "1234");
+
+-- Estudiantes --
+
 INSERT INTO ESTUDIANTES (matricula, firstName, lastName, semestre, fechaIngreso) VALUES (1635501, "Alberto Alan", "Zul Rabasa", 6, '2015-08-21');
 INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES (1, "Adrian", "Gerra Guajardo", 6, '2015-08-21');
 INSERT INTO ESTUDIANTES (firstName, lastName, semestre, fechaIngreso) VALUES (2, "Karla Cecilia", "Cantu Facio", 6, '2015-08-21');
@@ -155,11 +161,33 @@ INSERT INTO FRECUENCIAS(frecuencia, diaSemana) VALUES(1, "Sa");
 
 --------------------------------------------------------------------------------------------------------------------------------
 -- Maestros --
-INSERT INTO MAESTROS (nombre, apellidoPaterno, apellidoMaterno, semestre, fechaIngreso, estatus) VALUES ("MIGUEL ALEJANDRO", "CANDELARIA", "CORONADO", 5, "2001-02-21", 4);
-INSERT INTO MAESTROS (nombre, apellidoPaterno, apellidoMaterno, semestre, fechaIngreso, estatus) VALUES ("JOSE LUIS", "VAZQUEZ", "NIEBLA", 4, "2001-02-21", 4);
+INSERT INTO MAESTROS (matricula, apellidoPaterno, apellidoMaterno, nombre, fechaIngreso, estatus) VALUES
+(1000001, "AGUILAR", "DE LA ROSA", "MARTIN ALEJANDRO", "2016-02-22", 4),
+(1000002, "CANDELARIA", "CORONADO", "MIGUEL ALEJANDRO", "2016-02-22", 4),
+(1000003, "CANDELARIA", "TOVAR", "JOSE LUIS", "2016-02-22", 4),
+(1000004, "CASTAÑEDA", "RODRIGUEZ", "DIANA", "2016-02-22", 4),
+(1000005, "CASTRO", "MEDELLIN", "REYNA GUADALUPE", "2016-02-22", 4),
+(1000006, "DE LA FUENTE", "GARCIA", "CARMEN DEL ROSARIO", "2016-02-22", 4),
+(1000007, "DE LA GARZA", "OCHOA", "JUAN JESUS", "2016-02-22", 4),
+(1000008, "ELIZONDO", "ESPINOZA", "CARLOS", "2016-02-22", 4),
+(1000009, "GARZA", "GARZA", "LUIS GERARDO", "2016-02-22", 4),
+(10000010, "GARZA", "GONZALEZ", "IRMA LETICIA", "2016-02-22", 4),
+(10000011, "GIL", "GONZALEZ", "ALEIDA MAGDALENA", "2016-02-22", 4),
+(10000012, "GRACIA", "PINILLA", "MIGUEL ANGEL", "2016-02-22", 4),
+(10000013, "HERNANDEZ", "BAEZ", "JORGE", "2016-02-22", 4),
+(10000014, "HERNANDEZ", "CABRERA", "FRANCISCO", "2016-02-22", 4),
+(10000015, "HERNANDEZ", "OYERVIDES", "MARISSA ESMERALDA", "2016-02-22", 4),
+(10000016, "ISLAS", "PINEDA", "JORGE ALBERTO", "2016-02-22", 4),
+(10000017, "JUAREZ", "AGUILAR", "MARIA LUISA", "2016-02-22", 4),
+(10000018, "LEDEZMA", "MARTINEZ", "MARTHA", "2016-02-22", 4),
+(10000019, "LUNA", "CRIADO", "CARLOS", "2016-02-22", 4),
+(10000020, "MARTINEZ", "CEJUDO", "MARIA DEL CARMEN", "2016-02-22", 4);
 
 -- Cursos --
-INSERT INTO CURSOS (materia, maestro, semestre, frecuencia, horaInicio, horaFin) VALUES (138, 1, 5, 12, "07:00:00", "08:00:00");
+INSERT INTO CURSOS (materia, maestro, semestre, grupo, frecuencia, horaInicio, horaFin) VALUES
+(101, 1000004, 1, 1, 12, "07:00:00", "08:00:00"),
+(101, 1000004, 1, 2, 13, "11:00:00", "12:00:00"),
+(112, 1000002, 1, 1, 13, "11:00:00", "12:00:00");
 
 -- Inscripciones --
 INSERT INTO INSCRIPCIONES(matricula, curso, estatus) VALUES (1635501, 1, 1);

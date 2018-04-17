@@ -28,7 +28,7 @@ const AppNavigator = StackNavigator(
       screen: HomeScreen,
     },
     Horario: {
-      screen: HorarioScreen,
+    screen: HorarioScreen,
     },
     Inscripcion: {
       screen: InscripcionScreen,
@@ -48,15 +48,6 @@ const AppNavigator = StackNavigator(
   },
   {
     initialRouteName: 'LogIn',
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: '#802080',
-      },
-      headerTintColor: '#eee',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    },
   }
 );
 

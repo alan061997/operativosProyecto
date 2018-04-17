@@ -9,10 +9,7 @@ export default class LoginScreen extends Component {
     super(props);
     this.state = {
       username: '',
-      password: '',
-      user_data: {},
-      student_data: {},
-      logged_in: false,
+      password: ''
     };
   }
 
@@ -63,66 +60,39 @@ export default class LoginScreen extends Component {
         </View>
         <View style={styles.container}>
           <TouchableOpacity onPress={this.login} style={styles.btn}>
-            <Text style={styles.txt}>Log In</Text>
+            <Text>Log In</Text>
           </TouchableOpacity>
         </View>
         <View style={{flex: 0.3, backgroundColor: 'steelblue'}} />
       </View>
     );
   }
-  
+
   login = () => {
-    usrname = this.state.username;
-    api_url_user = `http://sis-operativos-2018.herokuapp.com/api.php/usuarios?filter=username,eq,${usrname}&transform=1`;
-    fetch(api_url_user, {
-        method: 'GET',
-        headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
+      fetch('http://192.168.0.7/Backend/getUsers.php', {
+        method: 'POST',
+        headers: {
+          'Accept' : "application/json",
+          'Content-Type' : 'application/json',
+        },
+          body: JSON.stringify({
+              username: this.state.username,
+              password: this.state.password,
+          })
       })
       .then((response) => response.json())
       .then((res) => {
-        console.log(`response = ${JSON.stringify(res)}`)
-          if (res.usuarios.length > 0 ){
-            user_data = res.usuarios[0]
-            console.log("test login")
-            if(user_data.password == this.state.password){
-              this.setState({logged_in: true})
-              this.setState({ user_data: user_data })
-              console.log("usuario correcto")
-            }
-            else{
-              Alert.alert("Password incorrecto");
-            }
+          if (res[0] !== undefined){
+            AsyncStorage.setItem('username', res[0].username);
+            this.props.navigation.navigate('Home', {username: this.state.username});
           } else{
-            Alert.alert("Usuario no existe");
+            Alert.alert("Username/Password are invalid.");
           }
       })
-      .then(() => {
-        console.log("fetching student data...")
-        usr_id = this.state.user_data.id;
-        api_url_student = `http://sis-operativos-2018.herokuapp.com/api.php/estudiantes?filter=usuario,eq,${usr_id}&transform=1`;
-        fetch(api_url_student, {
-          method: 'GET',
-          headers: {
-            'Accept': "application/json",
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => response.json())
-        .then((res) => {
-          console.log(`response = ${JSON.stringify(res)}`)
-          if (res.estudiantes.length > 0) {
-            student_data = res.estudiantes[0]
-            console.log("student confirmed")
-            this.setState({ student_data: student_data })
-            this.props.navigation.navigate('Home', { user_data: user_data, student_data: student_data });
-          } else {
-              Alert.alert("Estudiante no existe");
-            }
-          })
+      .catch((error)=>{
+        console.error(error);
       })
-    .catch((error) => {
-      console.error(error);
-    }).done();
+      .done();
   }
 }
 
@@ -139,8 +109,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#841584',
-  },
-  txt:{
-    color: '#C0C0C0',
   },
 })
