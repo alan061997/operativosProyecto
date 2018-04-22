@@ -10,6 +10,7 @@ import CursoScreen from "./Screens/CursoScreen"
 import GruposScreen from "./Screens/GruposScreen"
 import GrupoScreen from "./Screens/GrupoScreen"
 import MateriasScreen from "./Screens/MateriasScreen"
+import AlumnosScreen from "./Screens/AlumnosScreen"
 
 export default class App extends Component {
   render() {
@@ -44,6 +45,9 @@ const AppNavigator = StackNavigator(
     },
     Materias: {
       screen: MateriasScreen,
+    },
+    Alumnos: {
+      screen: AlumnosScreen,
     },
   },
   {
