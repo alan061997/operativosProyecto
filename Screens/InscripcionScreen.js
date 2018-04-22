@@ -38,7 +38,9 @@ export default class InscripcionScreen extends Component {
     const { params } = this.props.navigation.state;
     const state = this.state;
     const styles = StyleSheet.create({
-      container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+      container: { flex: 1, padding: 16, paddingTop: 10, backgroundColor: '#fff' },
+      rowContainer: { flex: 1, flexDirection:'row', padding: 4, paddingTop: 5, 
+        justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
       head: { height: 40, backgroundColor: '#841584' },
       text: { margin: 6 },
       textContainer: {
@@ -50,6 +52,14 @@ export default class InscripcionScreen extends Component {
         margin: 70,
         borderWidth: 1,
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#841584',
+      },
+      rightBtn: {
+        padding: 5,
+        width: "33%",
+        margin: 5,
+        borderWidth: 1,
         alignItems: 'center',
         backgroundColor: '#841584',
       },
@@ -75,17 +85,28 @@ export default class InscripcionScreen extends Component {
       </TouchableOpacity>
     );
 
-    let data_Semestre = [{value: '1',}, {value: '2',}, {value: '3',}, {value: '5',}, {value: '6',}];
+    let data_Semestre = [
+      { value: '1', }, 
+      { value: '2', }, 
+      { value: '3', }, 
+      { value: '4', }, 
+      {value: '5',}, 
+      {value: '6',}
+    ];
 
     return (
       <ScrollView>
       <View style={styles.container}>
-          <Dropdown label = 'Semestre' data = {data_Semestre} onChangeText={(value) => {this.setState({semestre_elegido: value});}} />
-          <TouchableOpacity style={styles.btn} onPress={() => this.getMaterias()}>
-            <View>
-              <Text style={styles.txt}>Show Data</Text>
-            </View>
+        <View style={styles.rowContainer}>
+            <Dropdown label='Semestre' data={data_Semestre} containerStyle={styles.container}
+                      onChangeText={(value) => { this.setState({ semestre_elegido: value }); }} />
+            <TouchableOpacity style={styles.rightBtn} 
+                              onPress={() => this.getMaterias()}>
+              <View>
+                <Text style={styles.txt}>Ver materias</Text>
+              </View>
           </TouchableOpacity>
+        </View>
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
             <Row data={state.tableHead} flexArr={[2, 2, 2]} style={styles.head} textStyle={styles.txt}/>
             {
@@ -100,13 +121,6 @@ export default class InscripcionScreen extends Component {
               ))
             }
         </Table>
-        <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
-            user_data: this.state.user_data,
-            student_data: this.state.student_data})} style={styles.btn}>
-            <Text style={styles.txt}>Ver grupos</Text>
-          </TouchableOpacity>
-        </View>
       </View>
       </ScrollView>
     );
