@@ -3,7 +3,6 @@ import { Alert, AppRegistry, TouchableOpacity, StyleSheet, ScrollView, Text, Vie
 import {StackNavigator} from 'react-navigation';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
 
-
 export default class MateriasScreen extends Component {
   static navigationOptions = {
     title: 'Materias',
@@ -33,8 +32,8 @@ export default class MateriasScreen extends Component {
     };
   }
 
-  goToMateria(materia_id){
-    this.props.navigation.navigate('Alumnos', {materia: materia_id, semestre: this.state.semestre_elegido});
+  goToAlumnos(materia_id){
+    this.props.navigation.navigate('Alumnos', {materia: materia_id});
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -71,7 +70,7 @@ export default class MateriasScreen extends Component {
       row: { flexDirection: 'row', },
     });
     const cell_button = (data, index) => (
-      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToMateria(data)}>
+      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToAlumnos(data)}>
         <View>
           <Text style={styles.txt}>{data}</Text>
         </View>

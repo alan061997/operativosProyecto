@@ -18,7 +18,7 @@ export default class AlumnosScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      materias_data: {materias: 'ninguna'},
+      materia: this.props.navigation.state.params.materia,
       user_data: this.props.navigation.state.params.user_data,
       student_data: this.props.navigation.state.params.student_data,
       curso_grupo: [':)'],
@@ -78,6 +78,7 @@ export default class AlumnosScreen extends Component {
       <View style={styles.container}>
         <Text>Lista de Alumnos</Text>
         <Text>matricula = {student_data.matricula}</Text>
+        <Text>materia clave = {this.state.materia}</Text>
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
             <Row data={state.tableHead} flexArr={[1, 1, 2, 2]} style={styles.head} textStyle={styles.txt}/>
         </Table>
