@@ -31,7 +31,19 @@ export default class InscripcionScreen extends Component {
   }
 
   goToCursos(materia_id){
-    this.props.navigation.navigate('Curso', {materia: materia_id, semestre: this.state.semestre_elegido});
+    if (this.state.semestre_elegido != student_data.semestre) {
+      Alert.alert(
+        "Te lo dije",
+        "No inscripciones",
+        [
+          { text: 'Ti li diji...', onPress: () => console.log('whatever pressed') },
+          { text: 'ok :(', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+          { text: 'Sorry bro', onPress: () => console.log('OK Pressed') },
+        ]);
+    }
+    else{
+      this.props.navigation.navigate('Curso', { materia: materia_id, semestre: this.state.semestre_elegido });
+    }
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -145,6 +157,16 @@ export default class InscripcionScreen extends Component {
         }
         this.setState({tableData: tableData});
         this.setState({ materias_data: res });
+        if (this.state.semestre_elegido != student_data.semestre){
+          Alert.alert(
+            "Advertencia", 
+            "No podras inscribir materias de este semestre",
+            [
+              { text: 'whatever', onPress: () => console.log('whatever pressed') },
+              { text: 'Ok :(', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+              { text: 'OK ;)', onPress: () => console.log('OK Pressed') },
+            ]);
+        }
       }
       else{
         console.log("Materias not found");
