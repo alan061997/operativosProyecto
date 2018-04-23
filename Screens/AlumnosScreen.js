@@ -28,6 +28,7 @@ export default class AlumnosScreen extends Component {
         ['a', 'b', 'c']
       ]
     };
+    this.getAlumnos().done();
   }
 
   render() {
