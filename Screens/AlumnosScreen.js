@@ -22,10 +22,10 @@ export default class AlumnosScreen extends Component {
       curso_grupo: [':)'],
       tableHead: ['Matricula', 'Materia', 'Nombre', 'Grupo'],
       tableData: [
-        ['1', '2', '3'],
-        ['a', 'b', 'c'],
-        ['1', '2', '3'],
-        ['a', 'b', 'c']
+        ['1', '2', '3', '4'],
+        ['a', 'b', 'c', 'd'],
+        ['1', '2', '3', '4'],
+        ['a', 'b', 'c', 'd']
       ]
     };
     this.getAlumnos().done();
@@ -66,7 +66,7 @@ export default class AlumnosScreen extends Component {
       row: { flexDirection: 'row', },
     });
     const cell_button = (data, index) => (
-      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToMateria(data)}>
+      <TouchableOpacity style={styles.cell_btn}>
         <View>
           <Text style={styles.txt}>{data}</Text>
         </View>
@@ -78,9 +78,22 @@ export default class AlumnosScreen extends Component {
         <Text>Lista de Alumnos</Text>
         <Text>matricula = {student_data.matricula}</Text>
         <Text>materia clave = {this.state.materia}</Text>
+
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
-            <Row data={state.tableHead} flexArr={[1, 1, 2, 2]} style={styles.head} textStyle={styles.txt}/>
+            <Row data={state.tableHead} flexArr={[1, 1, 2, 2]} style={styles.head} textStyle={styles.txt} />
+            {
+              state.tableData.map((rowData, index) => (
+                <TableWrapper key={index} flexArr={[1, 1, 2, 2]} style={styles.row}>
+                  {
+                    rowData.map((cellData, cellIndex) => (
+                      <Cell key={cellIndex} data={cellIndex === 0 ? cell_button(cellData, index) : cellData} textStyle={styles.txt} />
+                    ))
+                  }
+                </TableWrapper>
+              ))
+            }
         </Table>
+
         <View style={styles.container}>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
             user_data: this.state.user_data,
