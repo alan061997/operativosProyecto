@@ -4,7 +4,7 @@ import {StackNavigator} from 'react-navigation';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
 
 
-export default class AlumnosScreen extends Component {
+export default class AlumnosScreen extends Component { 
   static navigationOptions = {
     title: 'Alumnos',
     headerRight:
@@ -12,9 +12,7 @@ export default class AlumnosScreen extends Component {
           <Text>Log Out</Text>
       </TouchableOpacity>
   };
-  componentDidMount(){
-    this.getAlumnos().done();
-  }
+  
   constructor(props) {
     super(props)
     this.state = {
@@ -22,12 +20,12 @@ export default class AlumnosScreen extends Component {
       user_data: this.props.navigation.state.params.user_data,
       student_data: this.props.navigation.state.params.student_data,
       curso_grupo: [':)'],
-      tableHead: ['Clave', 'Sem', 'Nombre', 'Requiere'],
+      tableHead: ['Matricula', 'Materia', 'Nombre', 'Grupo'],
       tableData: [
-        ['1', '2', '3', '4', ],
-        ['a', 'b', 'c', 'd'],
-        ['1', '2', '3', '456\n789'],
-        ['a', 'b', 'c', 'd']
+        ['1', '2', '3'],
+        ['a', 'b', 'c'],
+        ['1', '2', '3'],
+        ['a', 'b', 'c']
       ]
     };
   }
@@ -95,7 +93,7 @@ export default class AlumnosScreen extends Component {
   }
   
   getAlumnos = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/alumnos.php?materia={materia_id}', {
+    fetch(`http://sis-operativos-2018.herokuapp.com/alumnos.php?materia=${this.state.materia}`, {
       method: 'GET',
       headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
     })
@@ -105,14 +103,14 @@ export default class AlumnosScreen extends Component {
       if (res.length > 0){
         tableData = [];
         for (i = 0; i < res.length; i++){
-          row = [res[i].clave, res[i].semestre, res[i].nombre, res[i].requiere];
+          row = [res[i].matricula, res[i].nombre, res[i].grupo];
           tableData.push(row);
         }
         this.setState({tableData: tableData});
         this.setState({ materias_data: res });
       }
       else{
-        console.log("Materias not found");
+        console.log("Alumnos not found");
       }
     })
     .catch((error) => {
