@@ -42,7 +42,7 @@ export default class InscripcionScreen extends Component {
         ]);
     }
     else{
-      this.props.navigation.navigate('Curso', { materia: materia_id, semestre: this.state.semestre_elegido });
+      this.props.navigation.navigate('Curso', { student_data: student_data, materia: materia_id, semestre: this.state.semestre_elegido });
     }
   }
   render() {

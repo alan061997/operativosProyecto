@@ -30,8 +30,54 @@ export default class CursoScreen extends Component {
     this.getCursos().done();
   }
 
+  inscribirMateria = async() => {
+    //WHERE THE MAGIC HAPPENS!!!
+    //adquiere informacion relevante
+    grupo = this.state.grupo;
+    materia = this.state.materia;
+    matricula = this.state.student_data.matricula;
+    
+    console.log("fetching important inscription stuff...");
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_validacion_inscripcion?transform=1&filter=matricula,eq,${matricula}`, {
+      method: 'GET',
+      headers: { 'Accept': "application/json", 'Content-Type': 'application/json', }
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(`respuesta inscripcion = \n${JSON.stringify(res)}`);
+        cursos_previos = res.vista_validacion_inscripcion;
+        if (cursos_previos.length > 0) {
+          for (i = 0; i < cursos_previos.length; i++) {
+            console.log(`Curso: \n${JSON.stringify(cursos_previos[i])}`);
+          }
+          console.log(`Grupo: ${grupo}`);
+          console.log(`Materia: ${materia}`);
+          console.log(`Matricula: ${matricula}`);
+          //Ahora si, aqui ocurre la magia:
+          
+        }
+        else {
+          console.log("Alumno sin materias inscritas");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   showData(cell_index, row_index){
-    Alert.alert(this.state.tableData[row_index][0].toString());
+    grupo = this.state.tableData[row_index][0].toString();
+    this.setState({grupo: grupo})
+    respuesta = Alert.alert("Importante", `Desea inscribir la materia en el grupo #${grupo}?`,
+      [
+        { text: 'Solo estaba viendo...', onPress: () => console.log('Just browsing pressed') },
+        { text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'Si', onPress: () => {
+            console.log('Intentando inscripcion...');
+            this.inscribirMateria();
+          } 
+        },
+      ]);
   }
   render() {
     const { navigate } = this.props.navigation;
