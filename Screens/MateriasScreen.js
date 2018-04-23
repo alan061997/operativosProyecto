@@ -23,12 +23,7 @@ export default class MateriasScreen extends Component {
       student_data: this.props.navigation.state.params.student_data,
       curso_grupo: [':)'],
       tableHead: ['Clave', 'Sem', 'Nombre', 'Requiere'],
-      tableData: [
-        ['1', '2', '3', '4', ],
-        ['a', 'b', 'c', 'd'],
-        ['1', '2', '3', '456\n789'],
-        ['a', 'b', 'c', 'd']
-      ]
+      tableData: [],
     };
   }
 

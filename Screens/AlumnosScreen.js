@@ -21,12 +21,7 @@ export default class AlumnosScreen extends Component {
       student_data: this.props.navigation.state.params.student_data,
       curso_grupo: [':)'],
       tableHead: ['Matricula', 'Materia', 'Nombre', 'Grupo'],
-      tableData: [
-        ['1', '2', '3', '4'],
-        ['a', 'b', 'c', 'd'],
-        ['1', '2', '3', '4'],
-        ['a', 'b', 'c', 'd']
-      ]
+      tableData: [],
     };
     this.getAlumnos().done();
   }
@@ -93,14 +88,6 @@ export default class AlumnosScreen extends Component {
               ))
             }
         </Table>
-
-        <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
-            user_data: this.state.user_data,
-            student_data: this.state.student_data})} style={styles.btn}>
-            <Text style={styles.txt}>Ver grupos</Text>
-          </TouchableOpacity>
-        </View>       
       </View>
       </ScrollView>
     );
