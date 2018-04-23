@@ -30,6 +30,45 @@ export default class CursoScreen extends Component {
     this.getCursos().done();
   }
 
+  isDuplicate(materia, cursos_previos){
+
+  }
+
+  isPrerrequisiteCovered(materia, cursos_previos){
+
+  }
+
+  isScheduleFree(materia, cursos_previos){
+
+  }
+
+  studentCredits(cursos_previos){
+
+  }
+
+  validaInscripcion(materia, cursos_previos){
+    if (isDuplicate(materia, cursos_previos)) {
+      Alert.alert("No procede inscripcion, materia inscrita previamente");
+      return;
+    }
+    if (isPrerrequisiteCovered(materia, cursos_previos)) {
+      Alert.alert("No procede inscripcion, cursar materia previa");
+      return;
+    }
+    if (isScheduleFree(materia, cursos_previos)) {
+      Alert.alert("No procede inscripcion, materia se empalma con horario actual");
+      return;
+    }
+    if (studentCredits(cursos_previos) < 5) {
+      Alert.alert("No procede inscripcion, Limite de creditos");
+      return;
+    }
+  }
+
+  inscribeMateria(){
+    
+  }
+
   inscribirMateria = async() => {
     //WHERE THE MAGIC HAPPENS!!!
     //adquiere informacion relevante
@@ -54,7 +93,10 @@ export default class CursoScreen extends Component {
           console.log(`Materia: ${materia}`);
           console.log(`Matricula: ${matricula}`);
           //Ahora si, aqui ocurre la magia:
-          
+          if(validaInscripcion(materia, cursos_previos)){
+            inscribeMateria();
+            Alert.alert("Materia inscrita correctamente");
+          }
         }
         else {
           console.log("Alumno sin materias inscritas");
