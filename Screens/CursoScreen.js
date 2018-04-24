@@ -81,7 +81,31 @@ export default class CursoScreen extends Component {
   }
 
   inscribeMateria = async() => {
-    
+    //JSON para inscripcion: { "matricula": 1443335, "curso": 10, "estatus": 2 }
+    //URL: http://sis-operativos-2018.herokuapp.com/api.php/inscripciones
+    //Metodo: POST
+    curso = this.state.curso_a_inscribir.id_curso;
+    matricula = this.state.student_data.matricula;
+    estatus = 2; //Significa "cursando"
+    inscripcion_body = JSON.stringify({
+      "matricula": matricula,
+      "curso": curso,
+      "estatus": estatus
+    })
+    console.log("Attempting inscription for real!!!");
+    console.log(`datos para inscripcion: ${inscripcion_body}`);
+    fetch("http://sis-operativos-2018.herokuapp.com/api.php/inscripciones", {
+      method: 'POST',
+      headers: { 'Accept': "application/json", 'Content-Type': 'application/json', },
+      body: inscripcion_body
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(`respuesta inscripcion definitiva = \n${JSON.stringify(res)}`);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   inscribirMateria = async() => {
@@ -119,7 +143,11 @@ export default class CursoScreen extends Component {
 
   showData(cell_index, row_index){
     grupo = this.state.tableData[row_index][0].toString();
-    this.setState({grupo: grupo})
+    this.setState({grupo: grupo});
+    //Agrega a estado informacion del curso para batallar menos al inscribir...
+    curso_a_inscribir = this.state.vista_cursos_materia[row_index];
+    this.setState({curso_a_inscribir: curso_a_inscribir});
+    console.log(`curso a inscribir: ${JSON.stringify(curso_a_inscribir)}`);
     respuesta = Alert.alert("Importante", `Desea inscribir la materia en el grupo #${grupo}?`,
       [
         { text: 'Solo estaba viendo...', onPress: () => console.log('Just browsing pressed') },
@@ -186,6 +214,7 @@ export default class CursoScreen extends Component {
           tableData.push(row);
         }
         this.setState({tableData: tableData});
+        this.setState({vista_cursos_materia : res});
       }
       else{
         console.log("Cursos not found");
