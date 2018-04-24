@@ -169,16 +169,16 @@ export default class CursoScreen extends Component {
     );
   }
   getCursos = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/Backend/getCursos.php', {
-      method: 'POST',
-      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
-      body: JSON.stringify({
-            materia: this.state.materia,
-        })
+    materia = this.state.materia;
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_cursos_materia?transform=1&filter=materia,eq,${materia}`, {
+      method: 'GET',
+      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',}
     })
     .then((response) => response.json())
     .then((res) => {
-      console.log(`response = ${JSON.stringify(res)}`)
+      console.log("info del curso:");
+      console.log(`response = ${JSON.stringify(res.vista_cursos_materia)}`);
+      res = res.vista_cursos_materia;
       if (res.length > 0){
         tableData = [];
         for (i = 0; i < res.length; i++){
