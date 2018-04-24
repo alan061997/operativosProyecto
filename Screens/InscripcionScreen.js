@@ -30,10 +30,13 @@ export default class InscripcionScreen extends Component {
     };
   }
 
-  goToCursos(materia_id){
+  goToCursos(materia_id, row_index){
+    materia_data = this.state.materias_data[row_index];
+    console.log(`materia_data = ${JSON.stringify(materia_data)}`);
     this.props.navigation.navigate('Curso', 
     { student_data: student_data, 
       materia: materia_id, 
+      materia_data: materia_data,
       semestre: this.state.semestre_elegido });
   }
   render() {
@@ -81,7 +84,7 @@ export default class InscripcionScreen extends Component {
       row: { flexDirection: 'row', },
     });
     const cell_button = (data, index) => (
-      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToCursos(data)}>
+      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToCursos(data, index)}>
         <View>
           <Text style={styles.txt}>{data}</Text>
         </View>
@@ -130,15 +133,14 @@ export default class InscripcionScreen extends Component {
   }
 
   getMaterias = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/Backend/getMaterias.php', {
-      method: 'POST',
-      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
-      body: JSON.stringify({
-            semestre: this.state.semestre_elegido,
-        })
+    semestre = this.state.semestre_elegido;
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_materias?transform=1&filter=semestre,eq,${semestre}`, {
+      method: 'GET',
+      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',}
     })
     .then((response) => response.json())
     .then((res) => {
+      res = res.vista_materias;
       console.log(`response = ${JSON.stringify(res)}`)
       if (res.length > 0){
         tableData = [];
@@ -148,6 +150,7 @@ export default class InscripcionScreen extends Component {
         }
         this.setState({tableData: tableData});
         this.setState({ materias_data: res });
+        console.log(`materias_data = ${JSON.stringify(this.state.materias_data)}`);
       }
       else{
         console.log("Materias not found");

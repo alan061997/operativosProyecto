@@ -19,6 +19,7 @@ export default class CursoScreen extends Component {
       student_data: this.props.navigation.state.params.student_data,
       semestre: this.props.navigation.state.params.semestre,
       materia: this.props.navigation.state.params.materia,
+      materia_data: this.props.navigation.state.params.materia_data,
       tableHead: ['Grupo', 'Maestro', 'Frecuencia', 'Hora Inicio', 'Hora Fin'],
       tableData: [
         ['1.1', '1.2', '1.3', '1.4', '1.5'],
@@ -48,6 +49,11 @@ export default class CursoScreen extends Component {
   }
 
   isPrerrequisiteCovered(materia, cursos_previos){
+    materia_data = this.state.materia_data;
+    console.log(`datos de materia: \n${JSON.stringify(materia_data)}`);
+    //for (i=0;i<cursos_previos.length;i++){
+    //  if()
+    //}
     return false;
   }
 
@@ -72,7 +78,7 @@ export default class CursoScreen extends Component {
     }
     if (!this.isPrerrequisiteCovered(materia, cursos_previos)) {
       console.log("falta requisito");
-      Alert.alert("No procede inscripcion, cursar materia previa");
+      Alert.alert("No procede inscripcion, debe aprobar materia requisito");
       return false;
     }
     if (!this.isScheduleFree(materia, cursos_previos)) {
