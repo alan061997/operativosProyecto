@@ -4,7 +4,7 @@ import {StackNavigator} from 'react-navigation';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
 
 
-export default class AlumnosScreen extends Component {
+export default class AlumnosScreen extends Component { 
   static navigationOptions = {
     title: 'Alumnos',
     headerRight:
@@ -12,24 +12,18 @@ export default class AlumnosScreen extends Component {
           <Text>Log Out</Text>
       </TouchableOpacity>
   };
-  componentDidMount(){
-    this.getAlumnos().done();
-  }
+  
   constructor(props) {
     super(props)
     this.state = {
-      materias_data: {materias: 'ninguna'},
+      materia: this.props.navigation.state.params.materia,
       user_data: this.props.navigation.state.params.user_data,
       student_data: this.props.navigation.state.params.student_data,
       curso_grupo: [':)'],
-      tableHead: ['Clave', 'Sem', 'Nombre', 'Requiere'],
-      tableData: [
-        ['1', '2', '3', '4', ],
-        ['a', 'b', 'c', 'd'],
-        ['1', '2', '3', '456\n789'],
-        ['a', 'b', 'c', 'd']
-      ]
+      tableHead: ['Matricula', 'Materia', 'Nombre', 'Grupo'],
+      tableData: [],
     };
+    this.getAlumnos().done();
   }
 
   render() {
@@ -67,7 +61,7 @@ export default class AlumnosScreen extends Component {
       row: { flexDirection: 'row', },
     });
     const cell_button = (data, index) => (
-      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToMateria(data)}>
+      <TouchableOpacity style={styles.cell_btn}>
         <View>
           <Text style={styles.txt}>{data}</Text>
         </View>
@@ -78,23 +72,29 @@ export default class AlumnosScreen extends Component {
       <View style={styles.container}>
         <Text>Lista de Alumnos</Text>
         <Text>matricula = {student_data.matricula}</Text>
+        <Text>materia clave = {this.state.materia}</Text>
+
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
-            <Row data={state.tableHead} flexArr={[1, 1, 2, 2]} style={styles.head} textStyle={styles.txt}/>
+            <Row data={state.tableHead} flexArr={[1, 1, 2, 2]} style={styles.head} textStyle={styles.txt} />
+            {
+              state.tableData.map((rowData, index) => (
+                <TableWrapper key={index} flexArr={[1, 1, 2, 2]} style={styles.row}>
+                  {
+                    rowData.map((cellData, cellIndex) => (
+                      <Cell key={cellIndex} data={cellIndex === 0 ? cell_button(cellData, index) : cellData} textStyle={styles.txt} />
+                    ))
+                  }
+                </TableWrapper>
+              ))
+            }
         </Table>
-        <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
-            user_data: this.state.user_data,
-            student_data: this.state.student_data})} style={styles.btn}>
-            <Text style={styles.txt}>Ver grupos</Text>
-          </TouchableOpacity>
-        </View>       
       </View>
       </ScrollView>
     );
   }
   
   getAlumnos = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/alumnos.php?materia={materia_id}', {
+    fetch(`http://sis-operativos-2018.herokuapp.com/alumnos.php?materia=${this.state.materia}`, {
       method: 'GET',
       headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
     })
@@ -104,14 +104,14 @@ export default class AlumnosScreen extends Component {
       if (res.length > 0){
         tableData = [];
         for (i = 0; i < res.length; i++){
-          row = [res[i].clave, res[i].semestre, res[i].nombre, res[i].requiere];
+          row = [res[i].matricula, res[i].nombre, res[i].grupo];
           tableData.push(row);
         }
         this.setState({tableData: tableData});
         this.setState({ materias_data: res });
       }
       else{
-        console.log("Materias not found");
+        console.log("Alumnos not found");
       }
     })
     .catch((error) => {
