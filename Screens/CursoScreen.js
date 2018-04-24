@@ -104,7 +104,10 @@ export default class CursoScreen extends Component {
 
   studentCredits(cursos_previos){
     console.info("validando creditos");
-    return 8;
+    cursos_actuales = cursos_previos.filter((curso) => {
+      return curso.semestre == sem_actual;
+    });
+    return cursos_actuales.length;
   }
 
   subjectStudentCount(materia, cursos_previos) {
@@ -129,12 +132,12 @@ export default class CursoScreen extends Component {
       Alert.alert("No procede inscripcion, materia se empalma con horario actual");
       return false;
     }
-    if (this.studentCredits(cursos_previos) >= 5) {
+    if (this.studentCredits(cursos_previos) >= 3) {
       console.log("creditos llenos");
       Alert.alert("No procede inscripcion, Limite de creditos");
       return false;
     }
-    if (this.subjectStudentCount(materia, cursos_previos) >= 3) {
+    if (this.subjectStudentCount(materia, cursos_previos) >= 2) {
       console.log("salon lleno");
       Alert.alert("No procede inscripcion, Limite de creditos");
       return false;
