@@ -47,19 +47,19 @@ export default class CursoScreen extends Component {
   }
 
   validaInscripcion(materia, cursos_previos){
-    if (isDuplicate(materia, cursos_previos)) {
+    if (this.isDuplicate(materia, cursos_previos)) {
       Alert.alert("No procede inscripcion, materia inscrita previamente");
       return;
     }
-    if (isPrerrequisiteCovered(materia, cursos_previos)) {
+    if (this.isPrerrequisiteCovered(materia, cursos_previos)) {
       Alert.alert("No procede inscripcion, cursar materia previa");
       return;
     }
-    if (isScheduleFree(materia, cursos_previos)) {
+    if (this.isScheduleFree(materia, cursos_previos)) {
       Alert.alert("No procede inscripcion, materia se empalma con horario actual");
       return;
     }
-    if (studentCredits(cursos_previos) < 5) {
+    if (this.studentCredits(cursos_previos) < 5) {
       Alert.alert("No procede inscripcion, Limite de creditos");
       return;
     }
@@ -93,8 +93,8 @@ export default class CursoScreen extends Component {
           console.log(`Materia: ${materia}`);
           console.log(`Matricula: ${matricula}`);
           //Ahora si, aqui ocurre la magia:
-          if(validaInscripcion(materia, cursos_previos)){
-            inscribeMateria();
+          if(this.validaInscripcion(materia, cursos_previos)){
+            this.inscribeMateria();
             Alert.alert("Materia inscrita correctamente");
           }
         }
