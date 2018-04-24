@@ -19,6 +19,7 @@ export default class CursoScreen extends Component {
       student_data: this.props.navigation.state.params.student_data,
       semestre: this.props.navigation.state.params.semestre,
       materia: this.props.navigation.state.params.materia,
+      materia_data: this.props.navigation.state.params.materia_data,
       tableHead: ['Grupo', 'Maestro', 'Frecuencia', 'Hora Inicio', 'Hora Fin'],
       tableData: [
         ['1.1', '1.2', '1.3', '1.4', '1.5'],
@@ -30,8 +31,198 @@ export default class CursoScreen extends Component {
     this.getCursos().done();
   }
 
+  anyMatch(a, b) {
+    for (i = 0; i < a.length; i++) {
+      if (b.indexOf(a[i]) >= 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isDuplicate(materia, cursos_previos){
+    //console.info(`materia = ${materia}`);
+    //for (i=0; i<cursos_previos.length; i++){
+      //console.info(`cursos previos = ${JSON.stringify(cursos_previos[i])}`);
+    //}
+    //Lista de ids de materias previas
+    materias_previas = cursos_previos.map(function (curso) { 
+      return (curso.materia == materia && curso.estatus == "cursando") 
+        || (curso.materia == materia && curso.estatus == "aprobada") ? true : false
+    });
+    //console.log(`materias previas (status) = ${materias_previas}`);
+    duplicate = materias_previas.indexOf(true) >= 0 ? true : false;
+    //console.log(`materia duplicada? = ${duplicate}`);
+    return duplicate;
+  }
+
+  isPrerrequisiteCovered(materia, cursos_previos){
+    console.info("validando requisitos");
+    materia_data = this.state.materia_data;
+    console.log(`datos de materia: \n${JSON.stringify(materia_data)}`);
+    console.log(`materia ${materia_data.nombre} requiere ${materia_data.requiere}`);
+    if(materia_data.requiere == null){
+      console.log("materia no tiene requisitos");
+      return true;
+    }
+    for (i=0;i<cursos_previos.length;i++){
+      console.log(`${cursos_previos[i].materia} requiere ${cursos_previos[i].requires}`);
+      if(cursos_previos[i].materia == materia_data.requiere_clave 
+        && cursos_previos[i].estatus == "aprobada"){
+          console.log("Requisito cubierto");
+          return true;
+        }
+    }
+    return false;
+  }
+
+  isScheduleFree(materia, cursos_previos){
+    console.info("validando horario");
+    materia_data = this.state.materia_data;
+    curso_a_inscribir = this.state.curso_a_inscribir;
+    sem_actual = materia_data.semestre;
+    //filtra materias por semestre actual
+    cursos_actuales = cursos_previos.filter((curso) => {
+      return curso.semestre == sem_actual;
+    });
+    console.log(`cursos_actuales = ${JSON.stringify(cursos_actuales)}`);
+    horario_a_inscribir = curso_a_inscribir.diaSemana.split("-");
+    console.log(`horario a inscribir: ${horario_a_inscribir}`);
+    for (i = 0; i < cursos_actuales.length;i++){
+      if (curso_a_inscribir.horaInicio == cursos_actuales[i].horaInicio){
+        //coincide hora, buscamos que coincida dia:
+        horario_previo = cursos_actuales[i].diaSemana.split("-");
+        console.log(`horario a matchear: ${horario_previo}`);
+        if (this.anyMatch(horario_a_inscribir, horario_previo)){
+          console.log("ERROR: coinciden horarios");
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  studentCredits(cursos_previos){
+    console.info("validando creditos");
+    cursos_actuales = cursos_previos.filter((curso) => {
+      return curso.semestre == sem_actual;
+    });
+    return cursos_actuales.length;
+  }
+
+  subjectStudentCount(materia, cursos_previos) {
+    console.info("validando disponibilidad del curso");
+    return 0;
+  }
+
+  validaInscripcion(materia, cursos_previos){
+    console.info("validando inscripcion...");
+    if (this.isDuplicate(materia, cursos_previos)) {
+      console.log("Duplicado");
+      Alert.alert("No procede inscripcion, materia inscrita previamente");
+      return false;
+    }
+    if (!this.isPrerrequisiteCovered(materia, cursos_previos)) {
+      console.log("falta requisito");
+      Alert.alert("No procede inscripcion, debe aprobar materia requisito");
+      return false;
+    }
+    if (!this.isScheduleFree(materia, cursos_previos)) {
+      console.log("se empalma materia");
+      Alert.alert("No procede inscripcion, materia se empalma con horario actual");
+      return false;
+    }
+    if (this.studentCredits(cursos_previos) >= 3) {
+      console.log("creditos llenos");
+      Alert.alert("No procede inscripcion, Limite de creditos");
+      return false;
+    }
+    if (this.subjectStudentCount(materia, cursos_previos) >= 2) {
+      console.log("salon lleno");
+      Alert.alert("No procede inscripcion, Limite de creditos");
+      return false;
+    }
+    return true;
+  }
+
+  inscribeMateria = async() => {
+    //JSON para inscripcion: { "matricula": 1443335, "curso": 10, "estatus": 2 }
+    //URL: http://sis-operativos-2018.herokuapp.com/api.php/inscripciones
+    //Metodo: POST
+    curso = this.state.curso_a_inscribir.id_curso;
+    matricula = this.state.student_data.matricula;
+    estatus = 3; //Significa "aprobada"
+    inscripcion_body = JSON.stringify({
+      "matricula": matricula,
+      "curso": curso,
+      "estatus": estatus
+    })
+    console.log("Attempting inscription for real!!!");
+    console.log(`datos para inscripcion: ${inscripcion_body}`);
+    fetch("http://sis-operativos-2018.herokuapp.com/api.php/inscripciones", {
+      method: 'POST',
+      headers: { 'Accept': "application/json", 'Content-Type': 'application/json', },
+      body: inscripcion_body
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(`respuesta inscripcion definitiva = \n${JSON.stringify(res)}`);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  inscribirMateria = async() => {
+    //WHERE THE MAGIC HAPPENS!!!
+    //adquiere informacion relevante
+    grupo = this.state.grupo;
+    materia = this.state.materia;
+    matricula = this.state.student_data.matricula;
+    
+    console.log("fetching important inscription stuff...");
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_validacion_inscripcion?transform=1&filter=matricula,eq,${matricula}`, {
+      method: 'GET',
+      headers: { 'Accept': "application/json", 'Content-Type': 'application/json', }
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(`respuesta inscripcion = \n${JSON.stringify(res)}`);
+        cursos_previos = res.vista_validacion_inscripcion;
+        for (i = 0; i < cursos_previos.length; i++) {
+          console.log(`Curso: \n${JSON.stringify(cursos_previos[i])}`);
+        }
+        console.log(`Grupo: ${grupo}`);
+        console.log(`Materia: ${materia}`);
+        console.log(`Matricula: ${matricula}`);
+        //Ahora si, aqui ocurre la magia:
+        if(this.validaInscripcion(materia, cursos_previos)){
+          this.inscribeMateria();
+          Alert.alert("Materia inscrita correctamente");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   showData(cell_index, row_index){
-    Alert.alert(this.state.tableData[row_index][0].toString());
+    grupo = this.state.tableData[row_index][0].toString();
+    this.setState({grupo: grupo});
+    //Agrega a estado informacion del curso para batallar menos al inscribir...
+    curso_a_inscribir = this.state.vista_cursos_materia[row_index];
+    this.setState({curso_a_inscribir: curso_a_inscribir});
+    console.log(`curso a inscribir: ${JSON.stringify(curso_a_inscribir)}`);
+    respuesta = Alert.alert("Importante", `Desea inscribir la materia en el grupo #${grupo}?`,
+      [
+        { text: 'Solo estaba viendo...', onPress: () => console.log('Just browsing pressed') },
+        { text: 'No', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+        { text: 'Si', onPress: () => {
+            console.log('Intentando inscripcion...');
+            this.inscribirMateria();
+          } 
+        },
+      ]);
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -71,16 +262,16 @@ export default class CursoScreen extends Component {
     );
   }
   getCursos = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/Backend/getCursos.php', {
-      method: 'POST',
-      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
-      body: JSON.stringify({
-            materia: this.state.materia,
-        })
+    materia = this.state.materia;
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_cursos_materia?transform=1&filter=materia,eq,${materia}`, {
+      method: 'GET',
+      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',}
     })
     .then((response) => response.json())
     .then((res) => {
-      console.log(`response = ${JSON.stringify(res)}`)
+      console.log("info del curso:");
+      console.log(`response = ${JSON.stringify(res.vista_cursos_materia)}`);
+      res = res.vista_cursos_materia;
       if (res.length > 0){
         tableData = [];
         for (i = 0; i < res.length; i++){
@@ -88,6 +279,7 @@ export default class CursoScreen extends Component {
           tableData.push(row);
         }
         this.setState({tableData: tableData});
+        this.setState({vista_cursos_materia : res});
       }
       else{
         console.log("Cursos not found");

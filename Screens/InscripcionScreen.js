@@ -31,15 +31,23 @@ export default class InscripcionScreen extends Component {
     };
   }
 
-  goToCursos(materia_id){
-    this.props.navigation.navigate('Curso', {materia: materia_id, semestre: this.state.semestre_elegido});
+  goToCursos(materia_id, row_index){
+    materia_data = this.state.materias_data[row_index];
+    console.log(`materia_data = ${JSON.stringify(materia_data)}`);
+    this.props.navigation.navigate('Curso', 
+    { student_data: student_data, 
+      materia: materia_id, 
+      materia_data: materia_data,
+      semestre: this.state.semestre_elegido });
   }
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     const state = this.state;
     const styles = StyleSheet.create({
-      container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
+      container: { flex: 1, padding: 16, paddingTop: 10, backgroundColor: '#fff' },
+      rowContainer: { flex: 1, flexDirection:'row', padding: 4, paddingTop: 5, 
+        justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' },
       head: { height: 40, backgroundColor: '#841584' },
       text: { margin: 6 },
       textContainer: {
@@ -51,6 +59,14 @@ export default class InscripcionScreen extends Component {
         margin: 70,
         borderWidth: 1,
         justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#841584',
+      },
+      rightBtn: {
+        padding: 5,
+        width: "33%",
+        margin: 5,
+        borderWidth: 1,
         alignItems: 'center',
         backgroundColor: '#841584',
       },
@@ -69,7 +85,7 @@ export default class InscripcionScreen extends Component {
       row: { flexDirection: 'row', },
     });
     const cell_button = (data, index) => (
-      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToCursos(data)}>
+      <TouchableOpacity style={styles.cell_btn} onPress={() => this.goToCursos(data, index)}>
         <View>
           <Text style={styles.txt}>{data}</Text>
         </View>
@@ -81,7 +97,16 @@ export default class InscripcionScreen extends Component {
     return (
       <ScrollView>
       <View style={styles.container}>
-          <Dropdown label = 'Semestre' data = {data_Semestre} onChangeText={(value) => {this.getMaterias(value)}} />
+        <View style={styles.rowContainer}>
+            <Dropdown label='Semestre' data={data_Semestre} containerStyle={styles.container}
+                      onChangeText={(value) => { this.setState({ semestre_elegido: value }); }} />
+            <TouchableOpacity style={styles.rightBtn} 
+                              onPress={() => this.getMaterias()}>
+              <View>
+                <Text style={styles.txt}>Ver materias</Text>
+              </View>
+          </TouchableOpacity>
+        </View>
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
             <Row data={state.tableHead} flexArr={[2, 2, 2]} style={styles.head} textStyle={styles.txt}/>
             {
@@ -96,29 +121,20 @@ export default class InscripcionScreen extends Component {
               ))
             }
         </Table>
-        <View style={styles.container}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
-            user_data: this.state.user_data,
-            student_data: this.state.student_data})} style={styles.btn}>
-            <Text style={styles.txt}>Ver grupos</Text>
-          </TouchableOpacity>
-        </View>
       </View>
       </ScrollView>
     );
   }
 
-  getMaterias(value){
-    this.setState({semestre_elegido: value});
-    fetch('http://sis-operativos-2018.herokuapp.com/Backend/getMaterias.php', {
-      method: 'POST',
-      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
-      body: JSON.stringify({
-            semestre: this.state.semestre_elegido,
-        })
+  getMaterias = async() => {
+    semestre = this.state.semestre_elegido;
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_materias?transform=1&filter=semestre,eq,${semestre}`, {
+      method: 'GET',
+      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',}
     })
     .then((response) => response.json())
     .then((res) => {
+      res = res.vista_materias;
       console.log(`response = ${JSON.stringify(res)}`)
       if (res.length > 0){
         tableData = [];
@@ -128,6 +144,7 @@ export default class InscripcionScreen extends Component {
         }
         this.setState({tableData: tableData});
         this.setState({ materias_data: res });
+        console.log(`materias_data = ${JSON.stringify(this.state.materias_data)}`);
       }
       else{
         console.log("Materias not found");

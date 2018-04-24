@@ -4,17 +4,16 @@ import {StackNavigator} from 'react-navigation';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
 
 
-export default class MateriasScreen extends Component {
+export default class AlumnosScreen extends Component {
   static navigationOptions = {
-    title: 'Materias',
+    title: 'Alumnos',
     headerRight:
       <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
           <Text>Log Out</Text>
       </TouchableOpacity>
   };
   componentDidMount(){
-    this.getMaterias().done();
-    this.getCursos().done();
+    this.getAlumnos().done();
   }
   constructor(props) {
     super(props)
@@ -33,9 +32,6 @@ export default class MateriasScreen extends Component {
     };
   }
 
-  goToMateria(materia_id){
-    this.props.navigation.navigate('Alumnos', {materia: materia_id, semestre: this.state.semestre_elegido});
-  }
   render() {
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
@@ -80,21 +76,10 @@ export default class MateriasScreen extends Component {
     return (
       <ScrollView>
       <View style={styles.container}>
-        <Text>Lista de materias</Text>
+        <Text>Lista de Alumnos</Text>
         <Text>matricula = {student_data.matricula}</Text>
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
             <Row data={state.tableHead} flexArr={[1, 1, 2, 2]} style={styles.head} textStyle={styles.txt}/>
-            {
-              state.tableData.map((rowData, index) => (
-                <TableWrapper key={index} flexArr={[1, 1, 2, 2]} style={styles.row}>
-                  {
-                    rowData.map((cellData, cellIndex) => (
-                      <Cell key={cellIndex} data={cellIndex === 0 ? cell_button(cellData, index) : cellData} textStyle={styles.txt} />
-                    ))
-                  }
-                </TableWrapper>
-              ))
-            }
         </Table>
         <View style={styles.container}>
           <TouchableOpacity onPress={() => this.props.navigation.navigate('Grupos', {
@@ -108,8 +93,8 @@ export default class MateriasScreen extends Component {
     );
   }
   
-  getMaterias = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/materias.php', {
+  getAlumnos = async() => {
+    fetch('http://sis-operativos-2018.herokuapp.com/alumnos.php?materia={materia_id}', {
       method: 'GET',
       headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
     })
@@ -128,22 +113,6 @@ export default class MateriasScreen extends Component {
       else{
         console.log("Materias not found");
       }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
-
-  getCursos = async() => {
-    fetch('http://sis-operativos-2018.herokuapp.com/cursos.php', {
-      method: 'GET', 
-      headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
-    })
-    .then((response) => response.json())
-    .then((res) => {
-      console.log(`response = ${JSON.stringify(res)}`)
-
-      this.setState({curso_grupo: res})
     })
     .catch((error) => {
       console.error(error);
