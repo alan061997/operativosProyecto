@@ -50,14 +50,24 @@ export default class CursoScreen extends Component {
   isPrerrequisiteCovered(materia, cursos_previos){
     materia_data = this.state.materia_data;
     console.log(`datos de materia: \n${JSON.stringify(materia_data)}`);
-    //for (i=0;i<cursos_previos.length;i++){
-    //  if()
-    //}
+    console.log(`materia ${materia_data.nombre} requiere ${materia_data.requiere}`);
+    if(materia_data.requiere == null){
+      console.log("materia no tiene requisitos");
+      return true;
+    }
+    for (i=0;i<cursos_previos.length;i++){
+      console.log(`${cursos_previos[i].materia} requiere ${cursos_previos[i].requires}`);
+      if(cursos_previos[i].materia == materia_data.requiere_clave 
+        && cursos_previos[i].estatus == "aprobada"){
+          console.log("Requisito cubierto");
+          return true;
+        }
+    }
     return false;
   }
 
   isScheduleFree(materia, cursos_previos){
-    return true;
+    return false;
   }
 
   studentCredits(cursos_previos){
