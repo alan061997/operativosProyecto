@@ -15,6 +15,7 @@ export default class InscripcionScreen extends Component {
       </TouchableOpacity>
   };
   componentDidMount(){
+
   }
   constructor(props) {
     super(props)
@@ -75,17 +76,12 @@ export default class InscripcionScreen extends Component {
       </TouchableOpacity>
     );
 
-    let data_Semestre = [{value: '1',}, {value: '2',}, {value: '3',}, {value: '5',}, {value: '6',}];
+    let data_Semestre = [{value: '1',}, {value: '2',}, {value: '3',}, {value: '4',}, {value: '5',}];
 
     return (
       <ScrollView>
       <View style={styles.container}>
-          <Dropdown label = 'Semestre' data = {data_Semestre} onChangeText={(value) => {this.setState({semestre_elegido: value});}} />
-          <TouchableOpacity style={styles.btn} onPress={() => this.getMaterias()}>
-            <View>
-              <Text style={styles.txt}>Show Data</Text>
-            </View>
-          </TouchableOpacity>
+          <Dropdown label = 'Semestre' data = {data_Semestre} onChangeText={(value) => {this.getMaterias(value)}} />
           <Table borderStyle={{ borderWidth: 2, borderColor: '#841584'}}>
             <Row data={state.tableHead} flexArr={[2, 2, 2]} style={styles.head} textStyle={styles.txt}/>
             {
@@ -112,7 +108,8 @@ export default class InscripcionScreen extends Component {
     );
   }
 
-  getMaterias = async() => {
+  getMaterias(value){
+    this.setState({semestre_elegido: value});
     fetch('http://sis-operativos-2018.herokuapp.com/Backend/getMaterias.php', {
       method: 'POST',
       headers: {'Accept' : "application/json", 'Content-Type' : 'application/json',},
@@ -139,9 +136,5 @@ export default class InscripcionScreen extends Component {
     .catch((error) => {
       console.error(error);
     });
-  }
-
-  getCursos = async() => {
-
   }
 }
