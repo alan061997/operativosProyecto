@@ -5,13 +5,13 @@ import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-compone
 
 
 export default class AlumnosScreen extends Component { 
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Alumnos',
     headerRight:
-      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
-          <Text>Log Out</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('LogIn')} style={{ backgroundColor: 'orange', margin: 10, padding: 10 }}>
+        <Text>Log Out</Text>
       </TouchableOpacity>
-  };
+  });
   
   constructor(props) {
     super(props)

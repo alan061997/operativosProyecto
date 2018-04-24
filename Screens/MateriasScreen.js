@@ -4,13 +4,13 @@ import {StackNavigator} from 'react-navigation';
 import { Table, TableWrapper, Row, Rows, Cell } from 'react-native-table-component';
 
 export default class MateriasScreen extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Materias',
     headerRight:
-      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
-          <Text>Log Out</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('LogIn')} style={{ backgroundColor: 'orange', margin: 10, padding: 10 }}>
+        <Text>Log Out</Text>
       </TouchableOpacity>
-  };
+  });
   componentDidMount(){
     this.getMaterias().done();
     this.getCursos().done();

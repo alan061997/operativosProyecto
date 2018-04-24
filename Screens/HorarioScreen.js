@@ -7,13 +7,13 @@ import { Dropdown } from 'react-native-material-dropdown';
 
 
 export default class HorarioScreen extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Horario',
     headerRight:
-      <TouchableOpacity onPress={()=>navigation.navigate('LogIn')} style={{backgroundColor:'orange', margin:10, padding:10}}>
-          <Text>Log Out</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('LogIn')} style={{ backgroundColor: 'orange', margin: 10, padding: 10 }}>
+        <Text>Log Out</Text>
       </TouchableOpacity>
-  };
+  });
   componentDidMount(){
   }
   constructor(props) {
