@@ -32,19 +32,18 @@ export default class CursoScreen extends Component {
   }
 
   isDuplicate(materia, cursos_previos){
-    console.info(`materia = ${materia}`);
-    for (i=0; i<cursos_previos.length; i++){
-      console.info(`cursos previos = ${JSON.stringify(cursos_previos[i])}`);
-    }
+    //console.info(`materia = ${materia}`);
+    //for (i=0; i<cursos_previos.length; i++){
+      //console.info(`cursos previos = ${JSON.stringify(cursos_previos[i])}`);
+    //}
     //Lista de ids de materias previas
     materias_previas = cursos_previos.map(function (curso) { 
       return (curso.materia == materia && curso.estatus == "cursando") 
         || (curso.materia == materia && curso.estatus == "aprobada") ? true : false
     });
-    console.log(`materias previas (status) = ${materias_previas}`);
+    //console.log(`materias previas (status) = ${materias_previas}`);
     duplicate = materias_previas.indexOf(true) >= 0 ? true : false;
-    console.log(`materia duplicada? = ${duplicate}`);
-    //return duplicate;
+    //console.log(`materia duplicada? = ${duplicate}`);
     return duplicate;
   }
 
