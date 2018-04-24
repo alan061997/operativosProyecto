@@ -31,6 +31,15 @@ export default class CursoScreen extends Component {
     this.getCursos().done();
   }
 
+  anyMatch(a, b) {
+    for (i = 0; i < a.length; i++) {
+      if (b.indexOf(a[i]) >= 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   isDuplicate(materia, cursos_previos){
     //console.info(`materia = ${materia}`);
     //for (i=0; i<cursos_previos.length; i++){
@@ -48,6 +57,7 @@ export default class CursoScreen extends Component {
   }
 
   isPrerrequisiteCovered(materia, cursos_previos){
+    console.info("validando requisitos");
     materia_data = this.state.materia_data;
     console.log(`datos de materia: \n${JSON.stringify(materia_data)}`);
     console.log(`materia ${materia_data.nombre} requiere ${materia_data.requiere}`);
@@ -67,19 +77,27 @@ export default class CursoScreen extends Component {
   }
 
   isScheduleFree(materia, cursos_previos){
+    console.info("validando horario");
+    materia_data = this.state.materia_data;
+    horario_a_inscribir = materia_data.diaSemana.split("-")
+    //for (i=0;i<cursos_previos.length;i++){
+      //if(materia_data.horaInicio == cursos_previos)
+    //}
     return false;
   }
 
   studentCredits(cursos_previos){
+    console.info("validando creditos");
     return 0;
   }
 
   subjectStudentCount(materia, cursos_previos) {
+    console.info("validando disponibilidad del curso");
     return 0;
   }
 
   validaInscripcion(materia, cursos_previos){
-    console.log("validando inscripcion...");
+    console.info("validando inscripcion...");
     if (this.isDuplicate(materia, cursos_previos)) {
       console.log("Duplicado");
       Alert.alert("No procede inscripcion, materia inscrita previamente");
