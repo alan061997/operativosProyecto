@@ -80,7 +80,7 @@ export default class CursoScreen extends Component {
     return true;
   }
 
-  inscribeMateria(){
+  inscribeMateria = async() => {
     
   }
 
@@ -100,21 +100,16 @@ export default class CursoScreen extends Component {
       .then((res) => {
         console.log(`respuesta inscripcion = \n${JSON.stringify(res)}`);
         cursos_previos = res.vista_validacion_inscripcion;
-        if (cursos_previos.length > 0) {
-          for (i = 0; i < cursos_previos.length; i++) {
-            console.log(`Curso: \n${JSON.stringify(cursos_previos[i])}`);
-          }
-          console.log(`Grupo: ${grupo}`);
-          console.log(`Materia: ${materia}`);
-          console.log(`Matricula: ${matricula}`);
-          //Ahora si, aqui ocurre la magia:
-          if(this.validaInscripcion(materia, cursos_previos)){
-            this.inscribeMateria();
-            Alert.alert("Materia inscrita correctamente");
-          }
+        for (i = 0; i < cursos_previos.length; i++) {
+          console.log(`Curso: \n${JSON.stringify(cursos_previos[i])}`);
         }
-        else {
-          console.log("Alumno sin materias inscritas");
+        console.log(`Grupo: ${grupo}`);
+        console.log(`Materia: ${materia}`);
+        console.log(`Matricula: ${matricula}`);
+        //Ahora si, aqui ocurre la magia:
+        if(this.validaInscripcion(materia, cursos_previos)){
+          this.inscribeMateria();
+          Alert.alert("Materia inscrita correctamente");
         }
       })
       .catch((error) => {
