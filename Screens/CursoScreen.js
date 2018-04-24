@@ -79,16 +79,32 @@ export default class CursoScreen extends Component {
   isScheduleFree(materia, cursos_previos){
     console.info("validando horario");
     materia_data = this.state.materia_data;
-    horario_a_inscribir = materia_data.diaSemana.split("-")
-    //for (i=0;i<cursos_previos.length;i++){
-      //if(materia_data.horaInicio == cursos_previos)
-    //}
-    return false;
+    curso_a_inscribir = this.state.curso_a_inscribir;
+    sem_actual = materia_data.semestre;
+    //filtra materias por semestre actual
+    cursos_actuales = cursos_previos.filter((curso) => {
+      return curso.semestre == sem_actual;
+    });
+    console.log(`cursos_actuales = ${JSON.stringify(cursos_actuales)}`);
+    horario_a_inscribir = curso_a_inscribir.diaSemana.split("-");
+    console.log(`horario a inscribir: ${horario_a_inscribir}`);
+    for (i = 0; i < cursos_actuales.length;i++){
+      if (curso_a_inscribir.horaInicio == cursos_actuales[i].horaInicio){
+        //coincide hora, buscamos que coincida dia:
+        horario_previo = cursos_actuales[i].diaSemana.split("-");
+        console.log(`horario a matchear: ${horario_previo}`);
+        if (this.anyMatch(horario_a_inscribir, horario_previo)){
+          console.log("ERROR: coinciden horarios");
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   studentCredits(cursos_previos){
     console.info("validando creditos");
-    return 0;
+    return 8;
   }
 
   subjectStudentCount(materia, cursos_previos) {
