@@ -132,7 +132,7 @@ export default class CursoScreen extends Component {
     //Metodo: POST
     curso = this.state.curso_a_inscribir.id_curso;
     matricula = this.state.student_data.matricula;
-    estatus = 2; //Significa "cursando"
+    estatus = 3; //Significa "aprobada"
     inscripcion_body = JSON.stringify({
       "matricula": matricula,
       "curso": curso,
