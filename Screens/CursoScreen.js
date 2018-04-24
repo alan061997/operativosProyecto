@@ -31,38 +31,53 @@ export default class CursoScreen extends Component {
   }
 
   isDuplicate(materia, cursos_previos){
-
+    return false;
   }
 
   isPrerrequisiteCovered(materia, cursos_previos){
-
+    return true;
   }
 
   isScheduleFree(materia, cursos_previos){
-
+    return true;
   }
 
   studentCredits(cursos_previos){
+    return 0;
+  }
 
+  subjectStudentCount(materia, cursos_previos) {
+    return 0;
   }
 
   validaInscripcion(materia, cursos_previos){
+    console.log("validando inscripcion...");
     if (this.isDuplicate(materia, cursos_previos)) {
+      console.log("Duplicado");
       Alert.alert("No procede inscripcion, materia inscrita previamente");
-      return;
+      return false;
     }
-    if (this.isPrerrequisiteCovered(materia, cursos_previos)) {
+    if (!this.isPrerrequisiteCovered(materia, cursos_previos)) {
+      console.log("falta requisito");
       Alert.alert("No procede inscripcion, cursar materia previa");
-      return;
+      return false;
     }
-    if (this.isScheduleFree(materia, cursos_previos)) {
+    if (!this.isScheduleFree(materia, cursos_previos)) {
+      console.log("se empalma materia");
       Alert.alert("No procede inscripcion, materia se empalma con horario actual");
-      return;
+      return false;
     }
-    if (this.studentCredits(cursos_previos) < 5) {
+    if (this.studentCredits(cursos_previos) >= 5) {
+      console.log("creditos llenos");
       Alert.alert("No procede inscripcion, Limite de creditos");
-      return;
+      return false;
     }
+    if (this.subjectStudentCount(materia, cursos_previos) >= 3) {
+      console.log("salon lleno");
+      Alert.alert("No procede inscripcion, Limite de creditos");
+      return false;
+    }
+    return true;
   }
 
   inscribeMateria(){
