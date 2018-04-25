@@ -33,6 +33,7 @@ export default class LoginScreen extends Component {
   });
 
   render() {
+    console.disableYellowBox = true;
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
