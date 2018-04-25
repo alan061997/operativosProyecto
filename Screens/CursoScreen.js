@@ -20,6 +20,7 @@ export default class CursoScreen extends Component {
       semestre: this.props.navigation.state.params.semestre,
       materia: this.props.navigation.state.params.materia,
       materia_data: this.props.navigation.state.params.materia_data,
+      all_courses: this.props.navigation.state.params.all_courses,
       tableHead: ['Grupo', 'Maestro', 'Frecuencia', 'Hora Inicio', 'Hora Fin'],
       tableData: [
         ['1.1', '1.2', '1.3', '1.4', '1.5'],
@@ -65,6 +66,7 @@ export default class CursoScreen extends Component {
       console.log("materia no tiene requisitos");
       return true;
     }
+    nombre_requisito = "nada";
     for (i=0;i<cursos_previos.length;i++){
       console.log(`${cursos_previos[i].materia} requiere ${cursos_previos[i].requires}`);
       if(cursos_previos[i].materia == materia_data.requiere_clave 
@@ -73,6 +75,7 @@ export default class CursoScreen extends Component {
           return true;
         }
     }
+    this.setState({ nombre_requiere: materia_data.requiere});
     return false;
   }
 
@@ -95,6 +98,8 @@ export default class CursoScreen extends Component {
         console.log(`horario a matchear: ${horario_previo}`);
         if (this.anyMatch(horario_a_inscribir, horario_previo)){
           console.log("ERROR: coinciden horarios");
+          this.setState({ nombre_empalme: cursos_actuales[i].nombre_materia});
+          console.log(`empalme = `);
           return false;
         }
       }
@@ -112,34 +117,41 @@ export default class CursoScreen extends Component {
 
   subjectStudentCount(materia, cursos_previos) {
     console.info("validando disponibilidad del curso");
-    return 0;
+    all_courses = this.state.all_courses;
+    curso_a_inscribir = this.state.curso_a_inscribir;
+    grupo = this.state.grupo;
+    alumnos_grupo = all_courses.filter((curso) => {
+      return (curso.clave == materia && curso.grupo == grupo);
+    })
+    console.info(`alumnos en el grupo: ${alumnos_grupo.length}`);
+    return alumnos_grupo.length;
   }
 
   validaInscripcion(materia, cursos_previos){
     console.info("validando inscripcion...");
     if (this.isDuplicate(materia, cursos_previos)) {
       console.log("Duplicado");
-      Alert.alert("No procede inscripcion, materia inscrita previamente");
+      Alert.alert("No procede inscripcion", "materia inscrita previamente");
       return false;
     }
     if (!this.isPrerrequisiteCovered(materia, cursos_previos)) {
       console.log("falta requisito");
-      Alert.alert("No procede inscripcion, debe aprobar materia requisito");
+      Alert.alert("No procede inscripcion", `debe aprobar ${this.state.nombre_requiere}`);
       return false;
     }
     if (!this.isScheduleFree(materia, cursos_previos)) {
       console.log("se empalma materia");
-      Alert.alert("No procede inscripcion, materia se empalma con horario actual");
+      Alert.alert(`No procede inscripcion`, `materia se empalma con \n'${this.state.nombre_empalme}'`);
       return false;
     }
     if (this.studentCredits(cursos_previos) >= 3) {
       console.log("creditos llenos");
-      Alert.alert("No procede inscripcion, Limite de creditos");
+      Alert.alert("No procede inscripcion", "Limite de creditos");
       return false;
     }
-    if (this.subjectStudentCount(materia, cursos_previos) >= 2) {
-      console.log("salon lleno");
-      Alert.alert("No procede inscripcion, Limite de creditos");
+    if (this.subjectStudentCount(materia, cursos_previos) >= 3) {
+      console.log("grupo lleno");
+      Alert.alert("No procede inscripcion", "grupo lleno");
       return false;
     }
     return true;

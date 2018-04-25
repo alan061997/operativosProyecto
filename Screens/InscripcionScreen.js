@@ -15,7 +15,7 @@ export default class InscripcionScreen extends Component {
       </TouchableOpacity>
   });
   componentDidMount(){
-
+    this.getCursos().done();
   }
   constructor(props) {
     super(props)
@@ -36,6 +36,7 @@ export default class InscripcionScreen extends Component {
     console.log(`materia_data = ${JSON.stringify(materia_data)}`);
     this.props.navigation.navigate('Curso', 
     { student_data: student_data, 
+      all_courses: this.state.all_courses,
       materia: materia_id, 
       materia_data: materia_data,
       semestre: this.state.semestre_elegido });
@@ -153,5 +154,26 @@ export default class InscripcionScreen extends Component {
     .catch((error) => {
       console.error(error);
     });
+  }
+
+  getCursos = async() => {
+    fetch(`http://sis-operativos-2018.herokuapp.com/api.php/vista_horario?transform=1`, {
+      method: 'GET',
+      headers: { 'Accept': "application/json", 'Content-Type': 'application/json', },
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        res = res.vista_horario;
+        console.log(`response = ${JSON.stringify(res)}`)
+        if (res.length > 0) {
+          this.setState({ all_courses: res });
+        }
+        else {
+          console.log("cursos not found");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 }
